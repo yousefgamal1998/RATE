@@ -141,6 +141,29 @@ if (!window.__userScoreAnimLoaded) {
                 else animateCircle(el);
             });
         });
+
+        // Expose helpers so other scripts can trigger animation on demand.
+        // Do not overwrite existing globals if present.
+        if (!window.__observeUserScoreElement) {
+            window.__observeUserScoreElement = function(el){
+                try {
+                    if (!el) return;
+                    if (!el.getAttribute || !el.getAttribute('data-percent')) return;
+                    if (observer) observer.observe(el);
+                    else animateCircle(el);
+                } catch(e) { try { animateCircle(el); } catch(_){} }
+            };
+        }
+
+        if (!window.__animateUserScoreElement) {
+            window.__animateUserScoreElement = function(el){
+                try {
+                    if (!el) return;
+                    if (!el.getAttribute || !el.getAttribute('data-percent')) return;
+                    animateCircle(el);
+                } catch(e) { /* ignore */ }
+            };
+        }
     })();
 }
 </script>

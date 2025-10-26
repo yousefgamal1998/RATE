@@ -178,6 +178,24 @@ fetch("/api/movies?visibility=homepage")
                 }
             }
 
+            // Convert rating (0-10) to percentage for "User Score" display (0-100)
+            let percentDisplay = "N/A";
+            let decimalDisplay = null;
+            if (ratingDisplay !== "N/A") {
+                const parsedRating = Number(ratingDisplay);
+                if (!Number.isNaN(parsedRating)) {
+                    percentDisplay = Math.round(parsedRating * 10); // e.g. 9.0 -> 90
+                    decimalDisplay = parsedRating.toFixed(1);
+                }
+            }
+
+            // Prepare SVG circle parameters similar to the Blade component
+            const uscSize = 44; // matches dashboard include
+            const uscStroke = 5;
+            const uscRadius = (uscSize / 2) - uscStroke;
+            const uscCirc = +(2 * Math.PI * uscRadius).toFixed(3);
+            const uid = 'usc_' + Math.random().toString(36).slice(2, 9);
+
             const cardHTML = `
   <a href="${movieUrl}" class="movie-link block no-underline" aria-label="Open ${
                 movie.title
@@ -209,21 +227,29 @@ fetch("/api/movies?visibility=homepage")
           </p>
         </div>
 
-                <!-- التقييم في الأسفل -->
-                <div class="mt-3 text-center">
-                    <span class="rating-row inline-flex items-center justify-center">
-                        <!-- SVG star to match dashboard styling -->
-                        <svg class="w-5 h-5 rating-star" viewBox="0 0 24 24" fill="#FFD700" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.788 1.402 8.168L12 18.896l-7.336 3.868 1.402-8.168L.132 9.21l8.2-1.192L12 .587z" />
+                <!-- User Score (animated circular) like dashboard -->
+                <div class="mt-5 flex items-center justify-center rating-row">
+                    <div id="${uid}" class="user-score-circle inline-flex items-center gap-3" style="line-height:1" data-percent="${
+                        percentDisplay !== "N/A" ? percentDisplay : ''
+                    }" data-decimal="${decimalDisplay !== null ? decimalDisplay : ''}">
+                        <svg width="${uscSize}" height="${uscSize}" viewBox="0 0 ${uscSize} ${uscSize}" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="gs-${uid}" x1="0%" x2="100%">
+                                    <stop offset="0%" stop-color="#1dd1a1" />
+                                    <stop offset="100%" stop-color="#06a" />
+                                </linearGradient>
+                            </defs>
+                            <g transform="translate(${uscSize/2}, ${uscSize/2})">
+                                <circle r="${uscRadius}" cx="0" cy="0" fill="none" stroke="#17202a" stroke-width="${uscStroke}" opacity="0.16"></circle>
+                                ${percentDisplay !== "N/A" ? `<circle id="${uid}-fg" class="usc-circle" r="${uscRadius}" cx="0" cy="0" fill="none" stroke="url(#gs-${uid})" stroke-width="${uscStroke}" stroke-linecap="round" stroke-dasharray="${uscCirc}" stroke-dashoffset="${uscCirc}" transform="rotate(-90)" />` : `<circle r="${uscRadius}" cx="0" cy="0" fill="none" stroke="#444" stroke-width="${uscStroke}" stroke-dasharray="${uscCirc}" stroke-dashoffset="0" opacity="0.12"></circle>`}
+                                <text id="${uid}-text" x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#fff" font-weight="700" font-size="${Math.max(10, Math.floor(uscSize / 3.5))}px">${percentDisplay !== "N/A" ? '0%' : '—'}</text>
+                            </g>
                         </svg>
-                        <span class="rating-value ml-3 inline-flex items-baseline text-yellow-400 font-semibold">
-                            ${
-                                ratingDisplay !== "N/A"
-                                    ? `<span class="rating-number">${ratingDisplay}</span><span class="rating-suffix">/10</span>`
-                                    : "N/A"
-                            }
-                        </span>
-                    </span>
+
+                        <div class="user-score-meta text-left">
+                            <div class="text-xs text-white/70 leading-tight">User Score</div>
+                        </div>
+                    </div>
                 </div>
       </div>
     </div>
@@ -231,13 +257,112 @@ fetch("/api/movies?visibility=homepage")
 `;
 
             moviesContainer.insertAdjacentHTML("beforeend", cardHTML);
+            // Observe / animate the newly inserted User Score element (if helper available)
+            try {
+                const newEl = document.getElementById(uid);
+                if (newEl && window.__observeUserScoreElement) {
+                    window.__observeUserScoreElement(newEl);
+                }
+            } catch (e) {
+                // noop
+            }
         });
     })
     .catch((error) =>
         console.error("حدث خطأ أثناء الاتصال بـ Laravel:", error)
     );
 
-// ✅ تحريك السلايدر يمين ويسار
+    // User Score animation helper (copied/adapted from Blade component)
+    if (!window.__userScoreAnimLoaded) {
+        window.__userScoreAnimLoaded = true;
+
+        (function(){
+            const ease = function(t){ return (--t)*t*t+1 }; // cubic ease-out
+
+            function animateCircle(elem){
+                const percent = parseInt(elem.getAttribute('data-percent'));
+                if (isNaN(percent)) return;
+
+                const fg = elem.querySelector('.usc-circle');
+                const txt = elem.querySelector('text');
+                const decEl = elem.querySelector('.user-score-meta #'+elem.id+'-decimal') || elem.querySelector('#'+elem.id+'-decimal') || elem.querySelector('.user-score-meta .usc-decimal') || elem.querySelector('#' + elem.id + '-decimal');
+                if (!fg || !txt) return;
+
+                const dasharray = parseFloat(fg.getAttribute('stroke-dasharray')) || 0;
+                const targetDash = dasharray * (percent/100);
+                const start = performance.now();
+                const duration = 1100; // ms
+
+                function frame(now){
+                    const t = Math.min(1, (now - start)/duration);
+                    const eased = ease(t);
+                    const current = Math.max(0, dasharray - (targetDash * eased));
+                    fg.setAttribute('stroke-dashoffset', current);
+
+                    // number animation (0 -> percent)
+                    const displayPct = Math.round(percent * eased);
+                    txt.textContent = displayPct + '%';
+
+                    // decimal update if present
+                    if (decEl){
+                        const decimalTarget = (percent/10);
+                        const decValue = (decimalTarget * eased).toFixed(1);
+                        // try to set textContent
+                        decEl.textContent = parseFloat(decValue).toFixed(1);
+                    }
+
+                    if (t < 1) requestAnimationFrame(frame);
+                    else {
+                        // ensure final state
+                        fg.setAttribute('stroke-dashoffset', Math.max(0, dasharray - targetDash));
+                        txt.textContent = percent + '%';
+                        if (decEl) decEl.textContent = (percent/10).toFixed(1);
+
+                        // small professional pop + glow on completion
+                        try {
+                            const parent = elem;
+                            parent.classList.add('pop');
+                            setTimeout(()=> parent.classList.remove('pop'), 360);
+                        } catch (err) {
+                            // noop
+                        }
+                    }
+                }
+
+                requestAnimationFrame(frame);
+            }
+
+            // IntersectionObserver will animate when visible
+            const observer = ('IntersectionObserver' in window) ? new IntersectionObserver((entries, obs)=>{
+                entries.forEach(en=>{
+                    if (en.isIntersecting) {
+                        animateCircle(en.target);
+                        obs.unobserve(en.target);
+                    }
+                });
+            }, { threshold: 0.2 }) : null;
+
+            // expose a helper to observe/animate a newly inserted element
+            window.__observeUserScoreElement = function(el){
+                if (!el) return;
+                if (!el.getAttribute('data-percent')) return;
+                if (observer) observer.observe(el);
+                else animateCircle(el);
+            };
+
+            // automatically observe existing elements on DOMContentLoaded
+            document.addEventListener('DOMContentLoaded', function(){
+                const elems = document.querySelectorAll('.user-score-circle');
+                elems.forEach(el=>{
+                    if (!el.getAttribute('data-percent')) return;
+                    if (observer) observer.observe(el);
+                    else animateCircle(el);
+                });
+            });
+        })();
+    }
+
+    // ✅ تحريك السلايدر يمين ويسار
 const container = document.getElementById("moviesContainer");
 const nextBtn = document.getElementById("nextMovie");
 const prevBtn = document.getElementById("prevMovie");
@@ -253,3 +378,5 @@ if (prevBtn && container) {
         container.scrollBy({ left: -300, behavior: "smooth" });
     });
 }
+
+

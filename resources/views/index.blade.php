@@ -208,6 +208,26 @@
                 /* Rating star + value alignment (match dashboard) */
                 .rating-star { fill: #FFD700 !important; }
                 .rating-value { display: inline-flex; align-items: baseline; gap: 0.15rem; }
+
+        /* Ensure user-score animations wait until the page is ready.
+           We pause animations by default and add the `start` class via JS
+           after the loading screen (#loadingScreen) disappears and the
+           page has been fully loaded/painted. This prevents the circle
+           from animating prematurely. */
+        .user-score {
+            /* pause any CSS animation until we explicitly start it */
+            -webkit-animation-play-state: paused !important;
+            animation-play-state: paused !important;
+        }
+
+        .user-score.start {
+            -webkit-animation-play-state: running !important;
+            animation-play-state: running !important;
+        }
+
+                
+
+                
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
@@ -295,6 +315,11 @@
                     <!-- New Console button linking to the add-movie page -->
                     <a href="{{ url('/admin/add-movie') }}" class="px-6 py-3 bg-white/10 text-white border border-white/20 rounded-md hover:bg-white/20 transition-all duration-300 text-lg font-semibold">Console</a>
                 </div>
+                <!-- User Score circle (same component used on dashboard) -->
+                <div class="mt-8 flex justify-center">
+                    {{-- include the user score circle so it uses the same SVG+JS animation as dashboard --}}
+                    @include('components.user_score_circle', ['value' => 9.0, 'size' => 72, 'stroke' => 8, 'label' => 'User Score', 'showDecimal' => false])
+                </div>
             </div>
         </section>
 
@@ -377,6 +402,99 @@
   window.isAuthenticated = @json(Auth::check());
     // استخدم اسم المسار المخصص login لضمان مرونة إذا تغيرت الروت
     window.loginUrl = @json(route('login'));
+</script>
+
+<!-- Start user-score delayed animation: define startUserScoreAnimation() and call it on window.load -->
+<script>
+    (function () {
+        'use strict';
+
+        function isElementHidden(el) {
+            if (!el) return true;
+            var s = window.getComputedStyle(el);
+            return s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) === 0 || (el.offsetWidth === 0 && el.offsetHeight === 0);
+        }
+
+        // Expose a global starter function as requested
+        window.startUserScoreAnimation = function startUserScoreAnimation() {
+            var loader = document.getElementById('loadingScreen');
+
+            function doStart() {
+                // animate-in for page content (keeps existing behaviour)
+                var page = document.getElementById('pageContent');
+                if (page && !page.classList.contains('animate-in')) {
+                    page.classList.add('animate-in');
+                }
+
+                // add .start to all user-score elements (also support .user-score-circle)
+                var scores = document.querySelectorAll('.user-score, .user-score-circle');
+                scores.forEach(function (el) {
+                    el.classList.add('start');
+                });
+            }
+
+            if (!loader) {
+                // No loader: start immediately (small delay to allow paint)
+                setTimeout(doStart, 50);
+                return;
+            }
+
+            // If loader already hidden, start right away
+            if (isElementHidden(loader)) {
+                setTimeout(doStart, 50);
+                return;
+            }
+
+            // Otherwise wait for loader to hide: prefer transitionend, fallback to mutation observer and timeout
+            var finished = false;
+
+            function finish() {
+                if (finished) return; finished = true;
+                setTimeout(doStart, 50);
+                cleanup();
+            }
+
+            function onTransition(e) {
+                if (e.target === loader) finish();
+            }
+
+            var obs = new MutationObserver(function () {
+                if (isElementHidden(loader)) finish();
+            });
+
+            function cleanup() {
+                loader.removeEventListener('transitionend', onTransition);
+                try { obs.disconnect(); } catch (e) {}
+            }
+
+            loader.addEventListener('transitionend', onTransition);
+            obs.observe(loader, { attributes: true, attributeFilter: ['class', 'style'] });
+
+            // Fallback: after 2s assume loader gone
+            setTimeout(finish, 2000);
+        };
+
+        // Call it once the window fully loads: trigger user-score animations immediately
+        window.addEventListener('load', function () {
+            try {
+                // Trigger any user-score circles to animate immediately on page start.
+                var elems = document.querySelectorAll('.user-score-circle, .user-score');
+                elems.forEach(function(el){
+                    if (!el || !el.getAttribute) return;
+                    if (!el.getAttribute('data-percent')) return;
+                    if (window.__observeUserScoreElement && typeof window.__observeUserScoreElement === 'function') {
+                        try { window.__observeUserScoreElement(el); return; } catch(e){}
+                    }
+                    if (window.__animateUserScoreElement && typeof window.__animateUserScoreElement === 'function') {
+                        try { window.__animateUserScoreElement(el); return; } catch(e){}
+                    }
+                    // fallback: add start class for CSS-driven animations
+                    try { el.classList.add('start'); } catch(e){}
+                });
+            } catch (e) { /* fail silently */ }
+        }, { once: true });
+
+    })();
 </script>
 
 
