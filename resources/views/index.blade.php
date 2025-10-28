@@ -316,10 +316,7 @@
                     <a href="{{ url('/admin/add-movie') }}" class="px-6 py-3 bg-white/10 text-white border border-white/20 rounded-md hover:bg-white/20 transition-all duration-300 text-lg font-semibold">Console</a>
                 </div>
                 <!-- User Score circle (same component used on dashboard) -->
-                <div class="mt-8 flex justify-center">
-                    {{-- include the user score circle so it uses the same SVG+JS animation as dashboard --}}
-                    @include('components.user_score_circle', ['value' => 9.0, 'size' => 72, 'stroke' => 8, 'label' => 'User Score', 'showDecimal' => false])
-                </div>
+                
             </div>
         </section>
 
