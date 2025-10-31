@@ -14,6 +14,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\FillTrailerUrls::class,
+        // Ensure default categories exist — useful for CI/CD pipelines and deployments
+        \App\Console\Commands\SyncCategories::class,
+        // Merge duplicate categories safely (reassign movies and delete duplicates)
+        \App\Console\Commands\CleanupCategories::class,
     ];
 
     /**

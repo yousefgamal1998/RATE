@@ -88,8 +88,8 @@
                     if (!$embed) {
                         $titleKey = strtolower(trim($movie->title ?? ''));
                         $officialFallbacks = [
-                            // Avengers: Endgame (official theatrical trailer)
-                            'avengers endgame' => 'https://www.youtube.com/watch?v=TcMBFSGVi1c',
+                            // Avengers: Endgame (official theatrical trailer) - use embed URL so iframe API works
+                            'avengers endgame' => 'https://www.youtube.com/embed/TcMBFSGVi1c',
                         ];
 
                         if (isset($officialFallbacks[$titleKey])) {
@@ -558,11 +558,23 @@
                                         // clear any existing YT mute check interval to avoid duplicates
                                         try{ if(window.__YT_MUTE_CHECK_INTERVAL){ clearInterval(window.__YT_MUTE_CHECK_INTERVAL); window.__YT_MUTE_CHECK_INTERVAL = null; } }catch(e){}
 
+                                        // Initialize YouTube player and request autoplay when ready.
+                                        // Use playerVars to ask the player to autoplay; additionally call playVideo() in onReady
+                                        // to ensure playback starts even if the API was just loaded.
                                         ytPlayer = new YT.Player('trailerFrame', {
+                                            playerVars: {
+                                                autoplay: 1,
+                                                rel: 0,
+                                                modestbranding: 1,
+                                                controls: 0
+                                            },
                                             events: {
                                                 onReady: function(){
                                                     hideSpinner();
                                                     updateProgress();
+                                                    // Attempt to start playback once ready
+                                                    try{ if(typeof ytPlayer.playVideo === 'function') ytPlayer.playVideo(); }catch(e){}
+
                                                     // Poll YouTube player for mute/volume changes (IFrame API doesn't provide a volumechange event)
                                                     try{
                                                         window.__YT_MUTE_CHECK_INTERVAL = setInterval(function(){

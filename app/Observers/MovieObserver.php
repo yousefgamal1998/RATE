@@ -35,7 +35,8 @@ class MovieObserver
         }
 
         try {
-            $data = $this->tmdb->getMovie((int) $movie->tmdb_id, ['videos']);
+            // Also request credits so the API returns production_companies if needed elsewhere
+            $data = $this->tmdb->getMovie((int) $movie->tmdb_id, ['videos', 'credits']);
         } catch (Exception $e) {
             logger()->debug('MovieObserver: TMDB getMovie failed: ' . $e->getMessage());
             return;

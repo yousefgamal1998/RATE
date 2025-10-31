@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Models\Category;
 use App\Services\TmdbService;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,19 @@ class MovieController extends Controller
         return response()->json($movies);
     }
 
+    /**
+     * Show the Add Movie form.
+     *
+     * This method loads categories from the database and passes them to the
+     * `add-movie` Blade view. The view will render the category selector
+     * without performing any writes.
+     */
+    public function create()
+    {
+        $categories = Category::orderBy('id')->get();
+        return view('add-movie', compact('categories'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->all();
@@ -60,6 +74,7 @@ class MovieController extends Controller
                 '*.is_featured' => 'sometimes|boolean',
                 '*.visibility' => 'sometimes|in:dashboard,homepage,both,add-movie',
                 '*.dashboard_id' => 'sometimes|nullable|integer',
+                '*.category_id' => 'sometimes|nullable|integer|exists:categories,id',
             ])->validate();
 
             $now = now();
@@ -82,6 +97,25 @@ class MovieController extends Controller
                     // Legacy integer representation (0-100) stored under `user_score`
                     $movie['user_score'] = intval(round($dec * 10));
                 }
+
+                // If the category corresponds to Marvel Cinematic Universe,
+                // ensure the movie will appear in the Latest Movies section by
+                // giving it a homepage visibility (use 'both' for compatibility).
+                if (!empty($movie['category_id'])) {
+                    try {
+                        $c = Category::find($movie['category_id']);
+                        if ($c && (strtolower($c->slug) === 'marvel-cinematic-universe' || strtolower($c->name) === 'marvel cinematic universe')) {
+                            $movie['visibility'] = 'both';
+                            $movie['is_featured'] = true;
+                            // set dashboard 2 when adding MCU items if not provided
+                            if (empty($movie['dashboard_id'])) {
+                                $movie['dashboard_id'] = 2;
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        // ignore mapping failures for bulk inserts
+                    }
+                }
             }
 
             Movie::insert($validated);
@@ -97,8 +131,9 @@ class MovieController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             // قبول حقل is_featured كمُدخل (اختياري)
             'is_featured' => 'sometimes|boolean',
-          'visibility' => 'sometimes|in:dashboard,homepage,both,add-movie',
-              'dashboard_id' => 'sometimes|nullable|integer',
+                    'visibility' => 'sometimes|in:dashboard,homepage,both,add-movie',
+                            'dashboard_id' => 'sometimes|nullable|integer',
+                            'category_id' => 'sometimes|nullable|integer|exists:categories,id',
         ]);
 
         // رفع الصورة إذا وُجِدَت
@@ -132,6 +167,58 @@ class MovieController extends Controller
             $dec = max(0, min(10, $dec));
             $validated['rating_decimal'] = round($dec, 1);
             $validated['user_score'] = intval(round($dec * 10));
+        }
+
+        // If admin selected the 'disney-plus' helper category (canonical slug
+        // used by CI/scripts), map it to the actual Disney+ Originals category
+        // used by the front-end ('disney-plus-originals') so the movie will
+        // appear in the ✨ Disney+ Originals section. Also set the MCU
+        // dashboard (2) and mark as Marvel when helpful so it surfaces in
+        // the 🛡️ Marvel Cinematic Universe area.
+        //
+        // Assumption: selecting the helper slug 'disney-plus' in the Add Movie
+        // form should result in the movie appearing in Disney+ Originals and
+        // in the MCU dashboard. If you prefer a different behavior (e.g.
+        // attach to both categories via a many-to-many relationship), tell me
+        // and I can implement that instead.
+        if (!empty($validated['category_id'])) {
+            try {
+                $sel = Category::find($validated['category_id']);
+                if ($sel && $sel->slug === 'disney-plus') {
+                    $target = Category::firstOrCreate(
+                        ['slug' => 'disney-plus-originals'],
+                        ['name' => 'Disney+ Originals', 'description' => 'Disney+ Originals - auto-created']
+                    );
+                    if ($target) {
+                        $validated['category_id'] = $target->id;
+                    }
+
+                    // Only map the category to Disney+ Originals. Do not modify
+                    // dashboard or MCU flags — the movie should appear only in
+                    // the ✨ Disney+ Originals section per your request.
+                }
+            } catch (\Exception $e) {
+                logger()->warning('Category mapping (disney-plus) failed: ' . $e->getMessage());
+            }
+        }
+
+        // If the selected category is Marvel Cinematic Universe, also make
+        // sure the movie is visible on the homepage/latest list by setting
+        // visibility to 'both' (and mark featured). This makes MCU-added
+        // movies appear in the 🎬 Latest Movies section automatically.
+        if (!empty($validated['category_id'])) {
+            try {
+                $sel2 = Category::find($validated['category_id']);
+                if ($sel2 && (strtolower($sel2->slug) === 'marvel-cinematic-universe' || strtolower($sel2->name) === 'marvel cinematic universe')) {
+                    $validated['visibility'] = 'both';
+                    $validated['is_featured'] = true;
+                    if (empty($validated['dashboard_id'])) {
+                        $validated['dashboard_id'] = 2; // MCU dashboard
+                    }
+                }
+            } catch (\Exception $e) {
+                logger()->warning('MCU visibility mapping failed: ' . $e->getMessage());
+            }
         }
 
         // Simple duplicate-protection: if a movie with the same title and
@@ -200,7 +287,8 @@ class MovieController extends Controller
                 }
 
                 if ($tmdbId) {
-                    $movieData = $this->tmdb->getMovie($tmdbId, ['videos']);
+                    // Request videos and credits to have video trailers and production company info
+                    $movieData = $this->tmdb->getMovie($tmdbId, ['videos', 'credits']);
                     $videos = $movieData['videos']['results'] ?? [];
 
                     // Prefer an official YouTube trailer if available, otherwise
@@ -317,9 +405,14 @@ class MovieController extends Controller
             'visibility' => 'sometimes|in:dashboard,homepage,both,add-movie',
             'is_featured' => 'sometimes|boolean',
             'dashboard_id' => 'sometimes|nullable|integer',
+            'category_id' => 'sometimes|nullable|integer|exists:categories,id',
         ]);
 
         $data = $request->only(['title', 'description', 'user_score', 'visibility', 'is_featured', 'dashboard_id']);
+        // include category_id if provided
+        if ($request->has('category_id')) {
+            $data['category_id'] = $request->input('category_id');
+        }
         if (isset($data['user_score'])) {
             $dec = floatval($data['user_score']);
             $dec = max(0, min(10, $dec));
@@ -340,6 +433,51 @@ class MovieController extends Controller
         // Normalize dashboard_id: accept empty/null
         if (array_key_exists('dashboard_id', $data) && ($data['dashboard_id'] === '' || $data['dashboard_id'] === null)) {
             $data['dashboard_id'] = null;
+        }
+
+        // Normalize category_id: accept empty/null
+        if (array_key_exists('category_id', $data) && ($data['category_id'] === '' || $data['category_id'] === null)) {
+            $data['category_id'] = null;
+        }
+
+        // Same mapping as create: if user changed the category to the helper
+        // 'disney-plus' slug, map to the front-end category and set MCU flags.
+        if (!empty($data['category_id'])) {
+            try {
+                $sel = Category::find($data['category_id']);
+                if ($sel && $sel->slug === 'disney-plus') {
+                    $target = Category::firstOrCreate(
+                        ['slug' => 'disney-plus-originals'],
+                        ['name' => 'Disney+ Originals', 'description' => 'Disney+ Originals - auto-created']
+                    );
+                    if ($target) {
+                        $data['category_id'] = $target->id;
+                    }
+
+                    // Only remap the category; do not change dashboard_id or is_marvel.
+                }
+            } catch (\Exception $e) {
+                logger()->warning('Category mapping (disney-plus) failed during update: ' . $e->getMessage());
+            }
+        }
+
+        // If the category is changed/selected to Marvel Cinematic Universe
+        // during an update, also ensure the movie remains visible in the
+        // Latest Movies (homepage) by setting visibility to 'both'. Keep
+        // dashboard and is_featured consistent with MCU convention.
+        if (!empty($data['category_id'])) {
+            try {
+                $sel3 = Category::find($data['category_id']);
+                if ($sel3 && (strtolower($sel3->slug) === 'marvel-cinematic-universe' || strtolower($sel3->name) === 'marvel cinematic universe')) {
+                    $data['visibility'] = 'both';
+                    $data['is_featured'] = true;
+                    if (empty($data['dashboard_id'])) {
+                        $data['dashboard_id'] = 2;
+                    }
+                }
+            } catch (\Exception $e) {
+                logger()->warning('MCU visibility mapping failed during update: ' . $e->getMessage());
+            }
         }
 
         $movie->update($data);

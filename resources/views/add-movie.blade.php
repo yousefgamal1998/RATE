@@ -55,6 +55,32 @@
     <p class="text-xs text-white/60 mt-1">Choose where this movie's card should appear.</p>
   </div>
 
+  @php
+    // Expecting the controller to pass $categories (collection of Category models).
+  // Make categories unique by name to avoid duplicate visible names in the dropdown
+  // (some scripts or past imports created multiple rows that show the same name).
+    // The view intentionally does not write to the database.
+    $categories = $categories ?? collect();
+  // keep the first occurrence per name and reindex the collection
+  $categories = $categories->unique('name')->values();
+  // Remove the legacy 'disney-plus' helper category from the selector so
+  // admins no longer see the "Disney Plus" option in the Add Movie form.
+  $categories = $categories->reject(function($c){ return isset($c->slug) && $c->slug === 'disney-plus'; })->values();
+  @endphp
+
+  <div class="mb-4">
+    <label for="category_id" class="block text-sm mb-1">Category</label>
+    <select id="category_id" name="category_id" class="w-full bg-gray-800 border border-gray-700 rounded-md p-3 text-white focus:outline-none">
+      <option value="" {{ old('category_id') ? '' : 'selected' }}>None</option>
+      @foreach($categories as $cat)
+        <option value="{{ $cat->id }}" {{ (string)old('category_id') === (string)$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+      @endforeach
+    </select>
+    <p class="text-xs text-white/60 mt-1">Assign the movie to a category (e.g. Marvel Cinematic Universe or Disney+ Originals).</p>
+  </div>
+
+  
+
   <div>
     <label class="block text-sm mb-1">Title</label>
     <input id="title" name="title" type="text" required
@@ -120,6 +146,6 @@
     </div>
   </div>
 
-  <script src="{{ asset('js/add-movie.js') }}"></script>
+  @vite(['resources/js/add-movie.js'])
 </body>
 </html>

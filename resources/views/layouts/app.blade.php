@@ -310,76 +310,31 @@
   </div>
 
 <div class="container mx-auto px-6">
-    <!-- الروابط الرئيسية -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
+    <!-- الروابط الرئيسية (محدّثة: أربعة عناوين فقط كما طُلب) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
 
-      <!-- Company -->
+      <!-- Marvel Cinematic Universe -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Company</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/about/" class="hover:text-white">About</a></li>
-          <li><a href="https://www.plex.tv/careers/" class="hover:text-white">Careers</a></li>
-          <li><a href="https://www.plex.tv/about/culture/" class="hover:text-white">Our Culture</a></li>
-          <li><a href="https://www.plex.tv/about/giving/" class="hover:text-white">Giving</a></li>
-          <li><a href="https://www.plex.tv/press/" class="hover:text-white">Press Room</a></li>
-          <li><a href="https://www.plex.tv/about/partners/" class="hover:text-white">Partners</a></li>
-          <li><a href="https://plex-gear.myshopify.com/" class="hover:text-white">Plex Gear</a></li>
-          <li><a href="https://www.plex.tv/blog/" class="hover:text-white">The Plex Blog</a></li>
-          <li><a href="https://www.plex.tv/advertising/" class="hover:text-white">Advertise with Us</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Marvel Cinematic Universe</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
-      <!-- Go Premium -->
+      <!-- disney plus -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Go Premium</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/plans/" class="hover:text-white">Plans</a></li>
-          <li><a href="https://www.plex.tv/plex-labs/" class="hover:text-white">Plex Labs</a></li>
-          <li><a href="https://www.plex.tv/plex-pass/perks/" class="hover:text-white">Get Perks</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">disney plus</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
-      <!-- Downloads -->
+      <!-- DC -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Downloads</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-media-server" class="hover:text-white">Plex Media Server</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-app" class="hover:text-white">Plex</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-plexamp" class="hover:text-white">Plexamp</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-plexphotos" class="hover:text-white">Plex Photos</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-plexdash" class="hover:text-white">Plex Dash</a></li>
-          <li><a href="https://www.plex.tv/apps-devices/" class="hover:text-white">Where to Watch</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">DC</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
-      <!-- Support -->
+      <!-- Horror -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Support</h3>
-        <ul class="space-y-2">
-          <li><a href="https://support.plex.tv/" class="hover:text-white">Finding Help</a></li>
-          <li><a href="https://support.plex.tv/articles/" class="hover:text-white">Support Library</a></li>
-          <li><a href="https://forums.plex.tv" class="hover:text-white">Community Forums</a></li>
-          <li><a href="https://www.plex.tv/about/community-guidelines/" class="hover:text-white">Community Guidelines</a></li>
-          <li><a href="https://www.plex.tv/contact/?option=plex-pass-billing" class="hover:text-white">Billing Questions</a></li>
-          <li><a href="https://status.plex.tv" class="hover:text-white">Status</a></li>
-          <li><a href="https://support.plex.tv/articles/reporting-security-issues/" class="hover:text-white">Bug Bounty</a></li>
-          <li><a href="https://cordcutter.plex.tv" class="hover:text-white">CordCutter</a></li>
-          <li><a href="https://www.plex.tv/contact/" class="hover:text-white">Get in Touch</a></li>
-        </ul>
-      </div>
-
-      <!-- Watch Free -->
-      <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Watch Free</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/discover/" class="hover:text-white">Discover on Plex</a></li>
-          <li><a href="https://www.plex.tv/live-tv-channels/" class="hover:text-white">TV Channel Finder</a></li>
-          <li><a href="https://www.plex.tv/what-to-watch/" class="hover:text-white">What to Watch</a></li>
-          <li><a href="https://www.plex.tv/what-to-watch/netflix/" class="hover:text-white">What to Watch on Netflix</a></li>
-          <li><a href="https://www.plex.tv/what-to-watch/hulu/" class="hover:text-white">What to Watch on Hulu</a></li>
-          <li><a href="https://www.plex.tv/a24-movies/" class="hover:text-white">A24 Collection</a></li>
-          <li><a href="/movie-database" class="hover:text-white">Movies Database</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Horror</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
     </div>
@@ -576,7 +531,9 @@
       </div>
     </div>
 
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+  @vite(['resources/js/dashboard.js'])
+  {{-- Render any pushed page-specific scripts --}}
+  @stack('scripts')
 </body>
 </html>
 

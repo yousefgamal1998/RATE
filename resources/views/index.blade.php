@@ -495,6 +495,6 @@
 </script>
 
 
-<script src="{{ asset('js/index.js') }}"></script>
+@vite(['resources/js/index.js'])
 </body>
 </html>

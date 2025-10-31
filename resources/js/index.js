@@ -1,4 +1,4 @@
-// RATE - Index Page JavaScript
+// RATE - Index Page JavaScript (migrated from public/js/index.js)
 // JavaScript functionality for the main landing page
 
 // Loading Animation

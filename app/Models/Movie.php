@@ -24,6 +24,7 @@ class Movie extends Model
         'tmdb_id',
         'category_id',
         'is_featured',
+        'is_marvel',
         'visibility',
         'dashboard_id',
     ];
@@ -31,6 +32,7 @@ class Movie extends Model
     protected $casts = [
         'genres' => 'array',
         'is_featured' => 'boolean',
+        'is_marvel' => 'boolean',
         'rating_decimal' => 'float',
         'user_score' => 'integer',
         'tmdb_id' => 'integer',
@@ -118,6 +120,23 @@ class Movie extends Model
         if (empty($this->slug) && !empty($attrs['title'])) {
             $this->slug = \Illuminate\Support\Str::slug($attrs['title']);
         }
+
+        // Detect Marvel production companies by their TMDB IDs.
+        // TMDB company ids:
+        //  - 420  => Marvel Studios
+        //  - 7505 => Marvel Entertainment
+        $isMarvel = false;
+        if (!empty($tmdb['production_companies']) && is_array($tmdb['production_companies'])) {
+            foreach ($tmdb['production_companies'] as $company) {
+                if (!empty($company['id']) && in_array((int) $company['id'], [420, 7505], true)) {
+                    $isMarvel = true;
+                    break;
+                }
+            }
+        }
+
+        // Ensure the model property is set so it will be persisted on save.
+        $this->is_marvel = $isMarvel;
 
         $this->save();
 

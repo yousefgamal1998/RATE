@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TmdbController;
+use App\Http\Controllers\MovieController;
 
 Route::get('/', function () {
     return view('index'); // 👈 هنا بنستدعي index.blade.php مباشرة من مجلد views
@@ -60,9 +61,9 @@ Route::get('/dev/login-as-test', function () {
     return redirect('/');
 })->name('dev.login');
 
-Route::get('/admin/add-movie', function () {
-    return view('add-movie'); // 👈 اسم الملف داخل resources/views/add-movie.blade.php
-});
+// Use a controller method so the view receives categories from the database.
+Route::middleware(['auth'])->get('/admin/add-movie', [MovieController::class, 'create'])
+    ->name('admin.movies.create');
 
 Route::get('/auth/redirect/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
 Route::get('/auth/callback/{provider}', [SocialController::class, 'callback'])->name('social.callback');

@@ -22,8 +22,8 @@
     $textSize = max(10, floor($size / 3.5));
     $fontWeight = $fontWeight ?? 700;
 
-    // unique id per instance (for targeting with JS)
-    $uid = 'usc_' . md5(uniqid((string) random_int(0, PHP_INT_MAX), true));
+    // unique id per instance (for targeting with JS) - use UUID instead of md5
+    $uid = 'usc_' . \Illuminate\Support\Str::uuid()->toString();
 @endphp
 
 <div id="{{ $uid }}" class="user-score-circle inline-flex items-center gap-3" style="line-height:1" data-percent="{{ $percent ?? '' }}" data-decimal="{{ $decimal ?? '' }}">

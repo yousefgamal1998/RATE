@@ -366,10 +366,39 @@
               </p>
             </div>
 
-            @php
-              // allow controllers to pass a $mcuMovies collection; fall back to empty collection
-              $mcu = $mcuMovies ?? collect();
-            @endphp
+      @php
+        // allow controllers to pass a $mcuMovies collection; otherwise auto-detect Marvel movies
+        // by scanning the provided $movies collection for the string "marvel" in common fields.
+        $mcu = $mcuMovies ?? collect();
+
+        // If controller didn't provide MCU list, and we have a $movies collection,
+        // build $mcu from $movies by doing a case-insensitive substring check for 'marvel'
+        if ((empty($mcuMovies) || $mcu->count() === 0) && isset($movies) && $movies->count()) {
+          // normalize source to a Collection
+          $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
+
+          $mcu = $source->filter(function($movie) {
+            // build a searchable string from several possible fields
+            $hay = '';
+            $hay .= isset($movie->title) ? ' ' . $movie->title : '';
+            $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
+            $hay .= isset($movie->production_company) ? ' ' . $movie->production_company : '';
+            $hay .= isset($movie->collection) ? ' ' . $movie->collection : '';
+            $hay .= isset($movie->brand) ? ' ' . $movie->brand : '';
+
+            // allow keywords array or string
+            if (isset($movie->keywords)) {
+              if (is_array($movie->keywords)) {
+                $hay .= ' ' . implode(' ', $movie->keywords);
+              } else {
+                $hay .= ' ' . $movie->keywords;
+              }
+            }
+
+            return stripos($hay, 'marvel') !== false;
+          })->values();
+        }
+      @endphp
 
             @if($mcu->count())
             <div class="relative">
@@ -419,6 +448,107 @@
 
             @else
             {{-- MCU no-movies message removed per request --}}
+            @endif
+          </div>
+        </section>
+
+        <!-- Disney+ Originals Carousel -->
+        <section class="py-16 bg-black">
+          <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-center mb-6 flex-col">
+              <h2 class="text-5xl font-bold flex items-center gap-4">
+               ✨ Disney+ Originals
+              </h2>
+              <p class="mt-4 text-center text-gray-300 max-w-3xl">
+                A curated collection of Disney+ Originals — exclusive films and premieres from Disney's streaming service. Browse titles assigned to the Disney+ Originals category below.
+              </p>
+            </div>
+
+      @php
+        // Prefer an explicit $disneyMovies collection passed from a controller
+        $disney = $disneyMovies ?? collect();
+
+        // If not provided, try to load movies from the category record
+        if ((empty($disney) || $disney->count() === 0) ) {
+          try {
+            $cat = \App\Models\Category::where('slug', 'disney-plus-originals')->first();
+            if ($cat) {
+              $disney = $cat->movies()->get();
+            }
+          } catch (\Exception $e) {
+            // ignore errors and fallback to heuristic
+          }
+        }
+
+        // Final fallback: filter the provided $movies collection for 'disney' keywords
+        if ((empty($disney) || $disney->count() === 0) && isset($movies) && $movies->count()) {
+          $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
+
+          $disney = $source->filter(function($movie) {
+            $hay = '';
+            $hay .= isset($movie->title) ? ' ' . $movie->title : '';
+            $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
+            $hay .= isset($movie->production_company) ? ' ' . $movie->production_company : '';
+            $hay .= isset($movie->collection) ? ' ' . $movie->collection : '';
+            $hay .= isset($movie->brand) ? ' ' . $movie->brand : '';
+
+            if (isset($movie->keywords)) {
+              if (is_array($movie->keywords)) {
+                $hay .= ' ' . implode(' ', $movie->keywords);
+              } else {
+                $hay .= ' ' . $movie->keywords;
+              }
+            }
+
+            return stripos($hay, 'disney') !== false || stripos($hay, 'disney+') !== false || stripos($hay, 'disney plus') !== false;
+          })->values();
+        }
+      @endphp
+
+            @if($disney->count())
+            <div class="relative">
+              <!-- Left arrow -->
+              <button type="button" class="carousel-arrow left arrow-button absolute left-4 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <!-- Carousel strip -->
+              <div class="carousel overflow-x-auto scrollbar-hidden snap-x snap-mandatory flex gap-6 px-6 py-2">
+                @foreach($disney as $movie)
+                <article class="movie-card snap-center bg-white/5 rounded-lg overflow-hidden flex-shrink-0 flex flex-col w-[260px] md:w-[300px] lg:w-[320px] cursor-pointer" aria-labelledby="disney-movie-{{ $movie->id }}-title">
+                  <a href="{{ route('movies.show', $movie->id) }}" class="absolute inset-0 z-10" tabindex="-1" aria-hidden="true"></a>
+                  <a href="{{ route('movies.show', $movie->id) }}" class="media block w-full bg-gray-800 overflow-hidden flex-shrink-0">
+                    <img src="{{ $movie->image_url ?? asset('image/placeholder.png') }}" alt="{{ $movie->title }} poster" class="w-full h-[330px] md:h-[360px] lg:h-[380px] object-cover lazy block">
+                    <div class="overlay">
+                      @php
+                        $rawTitle = trim($movie->title ?? '');
+                        $first = $rawTitle !== '' ? mb_strtoupper(mb_substr($rawTitle, 0, 1, 'UTF-8'), 'UTF-8') : '';
+                        $rest = $rawTitle !== '' ? mb_substr($rawTitle, 1, mb_strlen($rawTitle, 'UTF-8'), 'UTF-8') : '';
+                        $titleCap = $first . $rest;
+                      @endphp
+                      <h3 id="disney-movie-{{ $movie->id }}-title" class="movie-title text-white text-sm font-medium tracking-tight">{{ $titleCap }}</h3>
+                    </div>
+                  </a>
+                  <div class="p-4 flex-1 flex flex-col justify-between">
+                    <p class="text-xs text-gray-300 mt-2 leading-snug">{{ Str::limit($movie->description, 90) }}</p>
+                    <div class="mt-5 flex items-center justify-center rating-row">
+                      @php
+                        $val = $movie->rating_decimal ?? (isset($movie->user_score) ? $movie->user_score/10 : null);
+                      @endphp
+                      @include('components.user_score_circle', ['value' => $val, 'size' => 44, 'stroke' => 5, 'label' => 'User Score', 'showDecimal' => false])
+                    </div>
+                  </div>
+                </article>
+                @endforeach
+              </div>
+
+              <!-- Right arrow -->
+              <button type="button" class="carousel-arrow right arrow-button absolute right-4 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            @else
+            {{-- Disney no-movies message removed to keep parity with MCU behavior --}}
             @endif
           </div>
         </section>
@@ -574,78 +704,33 @@
 
     </div>
   </div>
-
+<br>
 <div class="container mx-auto px-6">
-    <!-- الروابط الرئيسية -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
+    <!-- الروابط الرئيسية (محدّثة: أربعة عناوين فقط كما طُلب) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
 
-      <!-- Company -->
+      <!-- Marvel Cinematic Universe -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Company</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/about/" class="hover:text-white">About</a></li>
-          <li><a href="https://www.plex.tv/careers/" class="hover:text-white">Careers</a></li>
-          <li><a href="https://www.plex.tv/about/culture/" class="hover:text-white">Our Culture</a></li>
-          <li><a href="https://www.plex.tv/about/giving/" class="hover:text-white">Giving</a></li>
-          <li><a href="https://www.plex.tv/press/" class="hover:text-white">Press Room</a></li>
-          <li><a href="https://www.plex.tv/about/partners/" class="hover:text-white">Partners</a></li>
-          <li><a href="https://plex-gear.myshopify.com/" class="hover:text-white">Plex Gear</a></li>
-          <li><a href="https://www.plex.tv/blog/" class="hover:text-white">The Plex Blog</a></li>
-          <li><a href="https://www.plex.tv/advertising/" class="hover:text-white">Advertise with Us</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Marvel Cinematic Universe</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
-      <!-- Go Premium -->
+      <!-- disney plus -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Go Premium</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/plans/" class="hover:text-white">Plans</a></li>
-          <li><a href="https://www.plex.tv/plex-labs/" class="hover:text-white">Plex Labs</a></li>
-          <li><a href="https://www.plex.tv/plex-pass/perks/" class="hover:text-white">Get Perks</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">disney plus</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
-      <!-- Downloads -->
+      <!-- DC -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Downloads</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-media-server" class="hover:text-white">Plex Media Server</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-app" class="hover:text-white">Plex</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-plexamp" class="hover:text-white">Plexamp</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-plexphotos" class="hover:text-white">Plex Photos</a></li>
-          <li><a href="https://www.plex.tv/media-server-downloads/#plex-plexdash" class="hover:text-white">Plex Dash</a></li>
-          <li><a href="https://www.plex.tv/apps-devices/" class="hover:text-white">Where to Watch</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">DC</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
-      <!-- Support -->
+      <!-- Horror -->
       <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Support</h3>
-        <ul class="space-y-2">
-          <li><a href="https://support.plex.tv/" class="hover:text-white">Finding Help</a></li>
-          <li><a href="https://support.plex.tv/articles/" class="hover:text-white">Support Library</a></li>
-          <li><a href="https://forums.plex.tv" class="hover:text-white">Community Forums</a></li>
-          <li><a href="https://www.plex.tv/about/community-guidelines/" class="hover:text-white">Community Guidelines</a></li>
-          <li><a href="https://www.plex.tv/contact/?option=plex-pass-billing" class="hover:text-white">Billing Questions</a></li>
-          <li><a href="https://status.plex.tv" class="hover:text-white">Status</a></li>
-          <li><a href="https://support.plex.tv/articles/reporting-security-issues/" class="hover:text-white">Bug Bounty</a></li>
-          <li><a href="https://cordcutter.plex.tv" class="hover:text-white">CordCutter</a></li>
-          <li><a href="https://www.plex.tv/contact/" class="hover:text-white">Get in Touch</a></li>
-        </ul>
-      </div>
-
-      <!-- Watch Free -->
-      <div>
-        <h3 class="text-white font-semibold text-lg mb-4">Watch Free</h3>
-        <ul class="space-y-2">
-          <li><a href="https://www.plex.tv/discover/" class="hover:text-white">Discover on Plex</a></li>
-          <li><a href="https://www.plex.tv/live-tv-channels/" class="hover:text-white">TV Channel Finder</a></li>
-          <li><a href="https://www.plex.tv/what-to-watch/" class="hover:text-white">What to Watch</a></li>
-          <li><a href="https://www.plex.tv/what-to-watch/netflix/" class="hover:text-white">What to Watch on Netflix</a></li>
-          <li><a href="https://www.plex.tv/what-to-watch/hulu/" class="hover:text-white">What to Watch on Hulu</a></li>
-          <li><a href="https://www.plex.tv/a24-movies/" class="hover:text-white">A24 Collection</a></li>
-          <li><a href="/movie-database" class="hover:text-white">Movies Database</a></li>
-        </ul>
+        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Horror</a></h3>
+        <!-- Links intentionally removed per request -->
       </div>
 
     </div>
@@ -843,7 +928,7 @@
       </div>
     </div>
 
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+  @vite(['resources/js/dashboard.js'])
 </body>
 </html>
 

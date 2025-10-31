@@ -79,6 +79,12 @@ class SyncTmdbMovie extends Command
             $appendArr = array_map('trim', explode(',', $append));
         }
 
+        // Always ensure we request credits so production_companies (and similar) are available
+        // for Movie::updateFromTmdb which relies on production_companies to detect Marvel.
+        if (!in_array('credits', $appendArr, true)) {
+            $appendArr[] = 'credits';
+        }
+
     $category = $this->option('category');
     $categoryId = $this->option('category_id');
 

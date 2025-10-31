@@ -143,7 +143,7 @@
         </div>
     </footer>
 
-    <script src="{{ asset('js/login.js') }}"></script>
+    @vite(['resources/js/login.js'])
     @if(config('services.recaptcha.site_key'))
         <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
         <script>

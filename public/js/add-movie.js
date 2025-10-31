@@ -301,7 +301,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await res.json();
             status.className = "text-sm text-green-400";
             status.textContent = "✅ Movie added successfully!";
-            console.log("Response:", data);
             form.reset();
 
             // بعد الإضافة: أعد التوجيه مباشرة إلى صفحة الفيلم الجديد (عرض الـ layout الخاص بالفيلم)
