@@ -7,6 +7,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Illuminate\Support\Facades\Schema;
 use App\Services\TmdbService;
 use App\Models\Movie;
+use App\Models\Category;
 
 class SyncTmdbMovie extends Command
 {
@@ -194,46 +195,49 @@ class SyncTmdbMovie extends Command
 
     $movie->updateFromTmdb($tmdbData);
 
-    // If a category_id or category was passed, try to persist it. Prefer numeric category_id when provided.
+    // If a category_id or category was passed, try to persist it. Prefer associating a Category model
+    // via the relationship (and therefore the `category_id` FK) when possible. Fall back to text
+    // columns (`category` or `universe`) only when no relational column exists.
     if (!empty($categoryId)) {
         if (Schema::hasColumn('movies', 'category_id')) {
-            // Check the Category exists to avoid FK constraint failures
-            $cat = \App\Models\Category::find((int) $categoryId);
+            // Check the Category exists to avoid FK constraint failures and associate via relationship
+            $cat = Category::find((int) $categoryId);
             if ($cat) {
-                $movie->forceFill(['category_id' => (int) $categoryId])->save();
-                $io->text('Category id saved to `category_id` column.');
+                $movie->category()->associate($cat);
+                $movie->save();
+                $io->text('Category id associated to movie via relationship.');
             } else {
-                // If a textual --category was provided, create the category and assign it.
                 if (!empty($category)) {
                     $slug = \Illuminate\Support\Str::slug($category);
 
                     // Try to find existing category by slug or name first
-                    $existing = \App\Models\Category::where('slug', $slug)
+                    $existing = Category::where('slug', $slug)
                         ->orWhere('name', $category)
                         ->first();
 
                     if ($existing) {
-                        $movie->forceFill(['category_id' => $existing->id])->save();
+                        $movie->category()->associate($existing);
+                        $movie->save();
                         $io->text('Assigned existing category (' . $existing->id . ') to the movie.');
                     } else {
-                        // Attempt to create (or fetch) the category. Use firstOrCreate to reduce the small
-                        // race window and catch any thrown exception (including unique constraint exceptions)
-                        // to re-query and assign if another process created it concurrently.
+                        // Use firstOrCreate to reduce race windows; then associate
                         try {
-                            $new = \App\Models\Category::firstOrCreate(
+                            $new = Category::firstOrCreate(
                                 ['slug' => $slug],
                                 ['name' => $category]
                             );
 
-                            $movie->forceFill(['category_id' => $new->id])->save();
-                            $io->text('Category did not exist; created or fetched category (' . $new->id . ') and assigned it.');
+                            $movie->category()->associate($new);
+                            $movie->save();
+                            $io->text('Category created or fetched and associated (' . $new->id . ').');
                         } catch (\Throwable $e) {
                             // Another process may have created it concurrently. Try to re-fetch.
-                            $existing = \App\Models\Category::where('slug', $slug)
+                            $existing = Category::where('slug', $slug)
                                 ->orWhere('name', $category)
                                 ->first();
                             if ($existing) {
-                                $movie->forceFill(['category_id' => $existing->id])->save();
+                                $movie->category()->associate($existing);
+                                $movie->save();
                                 $io->text('Category was created concurrently; assigned existing category (' . $existing->id . ').');
                             } else {
                                 $io->warning('Failed to create category and could not locate it afterwards: ' . $e->getMessage());
@@ -248,15 +252,50 @@ class SyncTmdbMovie extends Command
             $io->warning('Received --category_id but no `category_id` column exists on movies table. The value was not saved. Run a migration to add the column if you want persistence.');
         }
     } elseif (!empty($category)) {
-        // Fallback to text category/universe if numeric id not provided
-        if (Schema::hasColumn('movies', 'category')) {
+        // Prefer associating with Category (and category_id FK) when the column exists.
+        if (Schema::hasColumn('movies', 'category_id')) {
+            $slug = \Illuminate\Support\Str::slug($category);
+
+            $existing = Category::where('slug', $slug)
+                ->orWhere('name', $category)
+                ->first();
+
+            if ($existing) {
+                $movie->category()->associate($existing);
+                $movie->save();
+                $io->text('Assigned existing category (' . $existing->id . ') to the movie via relationship.');
+            } else {
+                try {
+                    $new = Category::firstOrCreate(
+                        ['slug' => $slug],
+                        ['name' => $category]
+                    );
+
+                    $movie->category()->associate($new);
+                    $movie->save();
+                    $io->text('Category created or fetched and associated (' . $new->id . ').');
+                } catch (\Throwable $e) {
+                    $existing = Category::where('slug', $slug)
+                        ->orWhere('name', $category)
+                        ->first();
+                    if ($existing) {
+                        $movie->category()->associate($existing);
+                        $movie->save();
+                        $io->text('Category was created concurrently; assigned existing category (' . $existing->id . ').');
+                    } else {
+                        $io->warning('Failed to create category and could not locate it afterwards: ' . $e->getMessage());
+                    }
+                }
+            }
+        } elseif (Schema::hasColumn('movies', 'category')) {
+            // Legacy text column exists; persist as text but still attempt to ensure a Category model exists
             $movie->forceFill(['category' => $category])->save();
             $io->text('Category saved to `category` column.');
         } elseif (Schema::hasColumn('movies', 'universe')) {
             $movie->forceFill(['universe' => $category])->save();
             $io->text('Category saved to `universe` column.');
         } else {
-            $io->warning('Received --category but no `category` or `universe` column exists on movies table. The value was not saved. Run a migration to add a column if you want persistence.');
+            $io->warning('Received --category but no `category`, `universe` or `category_id` column exists on movies table. The value was not saved. Run a migration to add a column if you want persistence.');
         }
     }
 

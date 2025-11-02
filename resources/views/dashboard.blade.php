@@ -368,13 +368,28 @@
             </div>
 
       @php
-        // allow controllers to pass a $mcuMovies collection; otherwise auto-detect Marvel movies
-        // by scanning the provided $movies collection for the string "marvel" in common fields.
+        // allow controllers to pass a $mcuMovies collection; otherwise prefer loading
+        // MCU movies from an explicit Category record (slug: 'marvel-cinematic-universe'),
+        // then fall back to the existing heuristic that scans the provided $movies
         $mcu = $mcuMovies ?? collect();
 
-        // If controller didn't provide MCU list, and we have a $movies collection,
-        // build $mcu from $movies by doing a case-insensitive substring check for 'marvel'
-        if ((empty($mcuMovies) || $mcu->count() === 0) && isset($movies) && $movies->count()) {
+        // If not provided by controller, prefer loading the latest 10 movies from the
+        // Category record so editors can explicitly control MCU membership.
+        if ((empty($mcu) || $mcu->count() === 0) ) {
+          try {
+            $marvelCategory = \App\Models\Category::where('slug', 'mcu')->first();
+            if ($marvelCategory) {
+              $mcu = $marvelCategory->movies()->latest()->take(10)->get();
+            }
+          } catch (\Exception $e) {
+            // ignore and fall back to heuristic below
+          }
+        }
+
+        // If controller didn't provide MCU list and category lookup did not return results,
+        // and we have a $movies collection, build $mcu from $movies by doing a case-insensitive
+        // substring check for 'marvel' in common fields.
+        if ((empty($mcu) || $mcu->count() === 0) && isset($movies) && $movies->count()) {
           // normalize source to a Collection
           $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
 
