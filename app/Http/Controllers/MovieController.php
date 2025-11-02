@@ -55,6 +55,17 @@ class MovieController extends Controller
      */
     public function create()
     {
+        // Ensure the DC Comics category exists so admins can select it
+        // from the Add Movie form even if the database hasn't been seeded yet.
+        try {
+            Category::firstOrCreate(
+                ['slug' => 'dc-comics'],
+                ['name' => 'DC Comics', 'description' => 'Movies and series from the DC Comics universe']
+            );
+        } catch (\Exception $e) {
+            // ignore any DB errors here; we'll still attempt to load categories
+        }
+
         $categories = Category::orderBy('id')->get();
         return view('add-movie', compact('categories'));
     }
@@ -486,6 +497,20 @@ class MovieController extends Controller
     }
 
     // ✅ حذف فيلم
+    /**
+     * Show movies for a given category slug (e.g. dc-comics)
+     * Returns a blade view `category` with $category and $movies variables.
+     */
+    public function byCategory($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        // eager load movies for this category
+        $movies = $category->movies()->orderBy('created_at', 'desc')->get();
+
+        return view('category', ['category' => $category, 'movies' => $movies]);
+    }
+
     public function destroy($id)
     {
         $movie = Movie::find($id);

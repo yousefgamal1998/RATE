@@ -453,6 +453,104 @@
           </div>
         </section>
 
+        <!-- DC Comics Carousel -->
+        <section class="py-16 bg-black">
+          <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-center mb-6 flex-col">
+              <h2 class="text-5xl font-bold flex items-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-auto" aria-hidden="true" role="img"><path d="M12 2L2 7l10 5 10-5-10-5zm0 7.5L4.5 8 12 4.5 19.5 8 12 9.5z" fill="#fff"/></svg>
+               DC Comics
+              </h2>
+              <p class="mt-4 text-center text-gray-300 max-w-3xl">
+                Titles from the DC Comics universe — heroes, villains and epic sagas. Browse the DC collection below.
+              </p>
+              
+            </div>
+
+      @php
+        $dc = $dcMovies ?? collect();
+
+        if ((empty($dc) || $dc->count() === 0) ) {
+          try {
+            $cat = \App\Models\Category::where('slug', 'dc-comics')->first();
+            if ($cat) {
+              $dc = $cat->movies()->get();
+            }
+          } catch (\Exception $e) {
+            // ignore and fallback to heuristic below
+          }
+        }
+
+        if ((empty($dc) || $dc->count() === 0) && isset($movies) && $movies->count()) {
+          $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
+
+          $dc = $source->filter(function($movie) {
+            $hay = '';
+            $hay .= isset($movie->title) ? ' ' . $movie->title : '';
+            $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
+            $hay .= isset($movie->production_company) ? ' ' . $movie->production_company : '';
+            $hay .= isset($movie->collection) ? ' ' . $movie->collection : '';
+            $hay .= isset($movie->brand) ? ' ' . $movie->brand : '';
+
+            if (isset($movie->keywords)) {
+              if (is_array($movie->keywords)) {
+                $hay .= ' ' . implode(' ', $movie->keywords);
+              } else {
+                $hay .= ' ' . $movie->keywords;
+              }
+            }
+
+            return stripos($hay, 'dc') !== false || stripos($hay, 'dc comics') !== false || stripos($hay, 'dc universe') !== false;
+          })->values();
+        }
+      @endphp
+
+            @if($dc->count())
+            <div class="relative">
+              <!-- Left arrow -->
+              <button type="button" class="carousel-arrow left arrow-button absolute left-4 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <!-- Carousel strip -->
+              <div class="carousel overflow-x-auto scrollbar-hidden snap-x snap-mandatory flex gap-6 px-6 py-2">
+                @foreach($dc as $movie)
+                <article class="movie-card snap-center bg-white/5 rounded-lg overflow-hidden flex-shrink-0 flex flex-col w-[260px] md:w-[300px] lg:w-[320px] cursor-pointer" aria-labelledby="dc-movie-{{ $movie->id }}-title">
+                  <a href="{{ route('movies.show', $movie->id) }}" class="absolute inset-0 z-10" tabindex="-1" aria-hidden="true"></a>
+                  <a href="{{ route('movies.show', $movie->id) }}" class="media block w-full bg-gray-800 overflow-hidden flex-shrink-0">
+                    <img src="{{ $movie->image_url ?? asset('image/placeholder.png') }}" alt="{{ $movie->title }} poster" class="w-full h-[330px] md:h-[360px] lg:h-[380px] object-cover lazy block">
+                    <div class="overlay">
+                      @php
+                        $rawTitle = trim($movie->title ?? '');
+                        $first = $rawTitle !== '' ? mb_strtoupper(mb_substr($rawTitle, 0, 1, 'UTF-8'), 'UTF-8') : '';
+                        $rest = $rawTitle !== '' ? mb_substr($rawTitle, 1, mb_strlen($rawTitle, 'UTF-8'), 'UTF-8') : '';
+                        $titleCap = $first . $rest;
+                      @endphp
+                      <h3 id="dc-movie-{{ $movie->id }}-title" class="movie-title text-white text-sm font-medium tracking-tight">{{ $titleCap }}</h3>
+                    </div>
+                  </a>
+                  <div class="p-4 flex-1 flex flex-col justify-between">
+                    <p class="text-xs text-gray-300 mt-2 leading-snug">{{ Str::limit($movie->description, 90) }}</p>
+                    <div class="mt-5 flex items-center justify-center rating-row">
+                      @php
+                        $val = $movie->rating_decimal ?? (isset($movie->user_score) ? $movie->user_score/10 : null);
+                      @endphp
+                      @include('components.user_score_circle', ['value' => $val, 'size' => 44, 'stroke' => 5, 'label' => 'User Score', 'showDecimal' => false])
+                    </div>
+                  </div>
+                </article>
+                @endforeach
+              </div>
+
+              <!-- Right arrow -->
+              <button type="button" class="carousel-arrow right arrow-button absolute right-4 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            @endif
+          </div>
+        </section>
+
         <!-- Disney+ Originals Carousel -->
         <section class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">

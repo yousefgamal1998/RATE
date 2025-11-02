@@ -35,6 +35,12 @@ class CategorySeeder extends Seeder
             'description' => 'Scary, suspenseful and horror films',
         ]);
 
+        // DC Comics category
+        Category::firstOrCreate(['slug' => 'dc-comics'], [
+            'name' => 'DC Comics',
+            'description' => 'Movies and series from the DC Comics universe',
+        ]);
+
 
     }
 }

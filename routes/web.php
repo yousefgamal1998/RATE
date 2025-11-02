@@ -89,6 +89,10 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+// Category pages (e.g. DC Comics) - show movies attached to a category slug
+Route::middleware(['auth'])->get('/categories/{slug}', [App\Http\Controllers\MovieController::class, 'byCategory'])
+    ->name('categories.show');
+
 // TMDB test route - server-side proxy to TMDB API. Reads credentials from config/services.php -> .env
 Route::get('/tmdb/movie/{id}', [TmdbController::class, 'show'])
     ->whereNumber('id')
