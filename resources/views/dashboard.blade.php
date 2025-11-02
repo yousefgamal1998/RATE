@@ -359,7 +359,8 @@
           <div class="max-w-7xl mx-auto px-6">
             <div class="flex items-center justify-center mb-6 flex-col">
               <h2 class="text-5xl font-bold flex items-center gap-4">
-               🛡️ Marvel Cinematic Universe
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 246.5 55.23" class="h-10 w-auto" aria-hidden="true" role="img"><title>Marvel Studios logo</title><path d="M518.28,486.45h117v-2.05h-117Z" transform="translate(-388.75 -484.39)"/><path d="M518.28,539.59h117v-2.05h-117Z" transform="translate(-388.75 -484.39)"/><path d="M534.52,519.17v5.89c0,5-2.48,7.51-7.51,7.51h-1.27c-5,0-7.39-2.48-7.39-7.39v-5.63h4.5v5.8c0,2.08,1,3.06,3.06,3.06h.92c2.08,0,3.06-1,3.06-3.06v-6.06a4.13,4.13,0,0,0-2-3.87l-5.66-4.1a8,8,0,0,1-3.87-7.51V499c0-5,2.48-7.51,7.51-7.51H527c5,0,7.39,2.48,7.39,7.39v3.46h-4.5v-3.64c0-2.08-1-3.06-3.06-3.06H526c-2.08,0-3.06,1-3.06,3.06v5.08a4.17,4.17,0,0,0,2.08,3.87l5.6,4c2.94,2.14,3.87,4,3.87,7.51" transform="translate(-388.75 -484.39)"/><path d="M541.61,532.22V496.08h-6.06V491.8h16.74v4.27h-6.06v36.14Z" transform="translate(-388.75 -484.39)"/><path d="M570.51,525.06c0,5-2.48,7.51-7.51,7.51h-1.44c-5,0-7.51-2.48-7.51-7.51V491.8h4.62v33.49c0,2.08,1,3.06,3.06,3.06h1.1c2.08,0,3.06-1,3.06-3.06V491.8h4.62Z" transform="translate(-388.75 -484.39)"/><path d="M578.07,528h2.77c3.12,0,4.56-1.56,4.56-4.68V500.69c0-3.12-1.44-4.68-4.56-4.68h-2.77Zm-4.62-36.2h7.62c6.06,0,8.95,2.89,8.95,8.95v22.52c0,6.06-2.89,8.95-8.95,8.95h-7.62Z" transform="translate(-388.75 -484.39)"/><path d="M597.42,532.22H592.8V491.8h4.62Z" transform="translate(-388.75 -484.39)"/><path d="M609.27,495.67h-1.39c-2.08,0-3.06,1-3.06,3.06v26.56c0,2.08,1,3.06,3.06,3.06h1.39c2.08,0,3.06-1,3.06-3.06V498.73c0-2.08-1-3.06-3.06-3.06m.17,36.89h-1.73c-5,0-7.51-2.48-7.51-7.51V499c0-5,2.48-7.51,7.51-7.51h1.73c5,0,7.51,2.48,7.51,7.51v26.1c0,5-2.48,7.51-7.51,7.51" transform="translate(-388.75 -484.39)"/><path d="M635.15,519.17v5.89c0,5-2.48,7.51-7.51,7.51h-1.27c-5,0-7.39-2.48-7.39-7.39v-5.63h4.5v5.8c0,2.08,1,3.06,3.06,3.06h.92c2.08,0,3.06-1,3.06-3.06v-6.06a4.13,4.13,0,0,0-2-3.87l-5.66-4.1a8,8,0,0,1-3.87-7.51V499c0-5,2.48-7.51,7.51-7.51h1.16c5,0,7.39,2.48,7.39,7.39v3.46h-4.51v-3.64c0-2.08-1-3.06-3.06-3.06h-.81c-2.08,0-3.06,1-3.06,3.06v5.08a4.17,4.17,0,0,0,2.08,3.87l5.6,4c2.94,2.14,3.87,4,3.87,7.51" transform="translate(-388.75 -484.39)"/><path d="M388.75,539.61H511.36V484.39H388.75Z" transform="translate(-388.75 -484.39)" style="fill:#e50b14"/><path d="M492.66,499.16h-6.54v9.13h6.54v7.38h-6.54v9.27h6.54v7.27H478.88V495.58l-5.81,36.63-8.5,0s-4.34-25.94-4.34-26h0c.7,4.19-1.93,8.57-4.26,10.3l4.6,15.67H453.4l-3.51-13.38-1.69.25v13.12H434.36l-.85-6.22h-5.67l-.85,6.22H412.91V512.73l-3.27,19.48h-3.88l-3.32-19.48v19.48h-7.3V491.79h9.27l3.25,20.88L411,491.79h9.27V529l5.57-37.17h9.68l5.39,35.88,0-35.88h7.4a11.69,11.69,0,0,1,10.54,6.57l-.83-6.57h7.39l3.34,24.61,3.37-24.61h20.5Z" transform="translate(-388.75 -484.39)" style="fill:#fff"/><path d="M448.24,499h0v13a4,4,0,0,0,1.72-.41c1.7-.83,3.15-2.89,3.15-6.16,0-6.26-4.26-6.43-4.83-6.43" transform="translate(-388.75 -484.39)" style="fill:#e50b14"/><path d="M428.7,519.56h4.08l-2.08-17.28Z" transform="translate(-388.75 -484.39)" style="fill:#e50b14"/><path d="M507.37,532.2H493.93V491.79h7.24v33.14h6.2Z" transform="translate(-388.75 -484.39)" style="fill:#fff"/></svg>
+               Marvel Cinematic Universe
               </h2>
               <p class="mt-4 text-center text-gray-300 max-w-3xl">
                 Discover the official Marvel Cinematic Universe — from Earth’s Mightiest Heroes to cosmic sagas. Browse films by phase, year, or character, read synopses, and see user scores and images. Whether you’re catching up or revisiting favorites, find everything MCU here.
@@ -457,12 +458,130 @@
           <div class="max-w-7xl mx-auto px-6">
             <div class="flex items-center justify-center mb-6 flex-col">
               <h2 class="text-5xl font-bold flex items-center gap-4">
-               ✨ Disney+ Originals
+                <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 539 294.94" class="h-10 w-auto" aria-hidden="true" role="img">
+                  <defs>
+                    <style>.cls-1{fill:none;}.cls-2{fill:#316777;}.cls-3{clip-path:url(#clippath);}</style>
+                    <clipPath id="clippath"><rect class="cls-1" width="539" height="294.94"/></clipPath>
+                  </defs>
+                  <g class="cls-3">
+                    <path class="cls-2" d="M34.3,209.17c-1.41-1.41-2.45-2.98-2.14-4.85.31-1.83,3.86-3.39,5.64-3.92,17.17-5.06,31.79-5.32,31.79-5.32,0,0-.16,6.16-.16,12.37-.05,11.8.26,23.8.26,23.8,0,0-19.42-5.64-35.39-22.08ZM84.62,115.26c-16.39-4.65-42.54-10.81-71.2-3.13-5.32,1.41-8.93,3.76-11.48,8.2-1.25,2.24-2.4,4.65-1.77,7.1.52,2.09,3.55,2.82,5.9,3.18,2.3.37,7.52.63,8.93-1.04.73-.89.73-3.34-3.08-4.12-1.41-.31-5.27-.42-5.53-1.1,0,0,.16-.47,2.24-1.1.94-.31,7.78-3.08,26.41-2.51,22.19.73,41.55,5.9,62.07,13.94,20.05,7.88,42.6,22.13,55.8,39.15,5.01,6.42,11.22,16.97,12.01,25.89,1.98,21.61-19.11,39.78-61.96,38.32-7.31-.26-16.23-1.98-16.23-1.98l-.89-41.66s18.11-.16,38.21,6.47c1.72.57,3.45,1.67,3.6,3.34.1,1.25-.89,2.35-2.04,3.34-2.09,1.83-4.96,2.61-5.59,3.39-.47.57-.47,1.41.16,1.88,1.51,1.15,5.22,1.93,7.73,1.72,5.06-.47,8.4-3.34,10.96-7.2,2.71-4.07,4.23-14.46-10.18-21.04-18.64-8.56-42.96-6.94-42.96-6.94,0,0-.1-5.64-.37-9.4-.42-6.16-2.14-18.32-7.78-21.77-1.04-.63-2.3-.73-3.03.26-1.1,1.41-2.19,6.84-2.4,8.25-2.14,12.63-1.98,23.91-2.14,24.07-.05.05-.1.16-.21.21-.21.16-13.68,1.72-26.68,7.36-5.17,2.24-12.58,6.26-14.83,11.48-2.92,6.73,2.19,14.09,10.81,22.24,7.31,6.89,18.06,14.15,26,17.91,2.04.94,4.44,2.14,4.44,2.14,0,0,.52,4.8.94,7.62,1.51,10.02,9.14,8.56,11.28,8.14,3.45-.68,4.07-2.98,4.54-5.64.26-1.46.16-3.55.16-3.55,0,0,5.17,1.2,8.67,1.83,10.13,1.88,21.14,2.19,30.64.89,38.11-5.22,47.71-23.13,50.79-27.93,5.27-8.35,16.5-31.53-17.23-65.98-7.73-7.93-29.96-29.6-74.7-42.23Z"/>
+                    <path class="cls-2" d="M197.38,151.44c3.97-5.12,11.33-11.48,16.5-14.56,4.02-2.4,7.52-3.08,10.08-1.93,1.57.68,2.77,2.09,2.98,3.92.68,5.79-6,10.6-10.44,13.21-10.13,5.9-22.13,4.59-22.45,4.02-.05-.05,2.45-3.45,3.34-4.65ZM183.13,151.6s-.37-.78-.63-1.36c-1.67-4.12,1.98-8.77,5.32-11.59,6.53-5.53,12.06-5.43,12.06-5.43,0,0-1.31,1.04-2.4,2.04-9.5,8.3-14.36,16.34-14.36,16.34ZM208.97,165.79c8.04-3.13,14.3-7.67,20.57-14.15,3.71-3.76,6.89-9.87,5.74-15.5-.57-2.77-1.88-4.7-4.18-6.73-1.15-.99-3.81-2.4-5.95-2.82-.63-.1-1.31-.16-1.57-.37-.31-.21-.57-.57-.84-.99-1.41-1.77-4.23-3.5-6.21-4.18-6.16-2.14-14.46-.52-20.05,1.83-5.95,2.51-11.43,6.21-15.61,10.7-10.96,11.75-6.16,21.04-5.17,22.76.84,1.46,2.35,3.03,2.71,4.59.21.89,0,2.09.05,3.18.05,2.45,1.15,5.01,3.03,6.63,1.31,1.15,3.24,1.51,5.17-1.41.63-.99,1.72-2.98,1.72-2.98,0,0,2.24,1.31,7.62,1.67,3.92.31,9.4-.89,12.95-2.24Z"/>
+                    <path class="cls-2" d="M427.22,218.05c-2.09,1.98-9.03,5.9-16.18,6.68,6.84-13.26,15.35-23.02,20.05-28.19,5.48-6.16,6.21-.57,6.21-.57,1.25,10.86-6.68,19.05-10.08,22.08ZM439.07,182.86c-12.95-8.98-33.77,19.42-42.96,33.51-1.36-7.15,3.5-16.29,3.5-16.29,0,0,7.78-13.47,8.87-16.18,1.04-2.77,1.67-8.4.37-8.98-1.2-.57-3.29,1.25-3.29,1.25-17.49,15.66-19.94,33.04-19.94,33.04-1.67,9.34.26,15.92,3.13,20.52-9.71,20.67-14.46,38.73-13.21,49.38,1.2,8.14,7,13.99,10.54,15.24,3.55,1.46,4.23-2.82,4.23-2.82,2.87-22.08,7.93-36.8,13.94-51.37,18.22,4.18,31.95-13.52,36.8-22.03,2.87-5.06,4.39-11.85,4.39-18.27,0-7.15-2.04-13.94-6.37-17.02Z"/>
+                    <path class="cls-2" d="M379.2,228.54c.89-3.29-2.14-6.94-4.85-7.62-2.56-.52-22.08,3.13-24.43,3.76-2.51.68-1.41-1.67-1.41-1.67l3.03-10.23s18.69-.73,21.4-1.15c2.51-.47,2.66-2.24,2.66-2.24,0,0,.31-2.92.21-5.64-.26-2.92-2.61-2.66-2.61-2.66-7.2-.73-17.12.1-17.12.1l2.51-7.83s19.84-.94,27.41-2.71c3.86-.94,1.62-4.7,1.62-4.7-4.7-9.4-10.13-8.87-10.13-8.87-15.61-.52-38.32,3.6-40.77,4.85-2.3,1.04-2.09,2.77.94,6.58,3.24,4.02,8.72,3.65,8.72,3.65l-4.8,9.87c-3.92.26-5.27,1.51-5.27,1.51-2.24,2.4.84,9.5.84,9.5,0,0-6.79,15.19-1.88,23.23,5.27,8.4,11.54,8.04,11.54,8.04,11.85.73,31.37-11.69,32.42-15.77Z"/>
+                    <path class="cls-2" d="M310.97,168.2s-2.77-1.31-3.45,1.46c-.68,2.71.37,5.64.37,5.64,6.89,23.33,8.46,37.12,8.46,37.12,0,0,.31,4.07-.47,4.28-.57.42-1.15-.16-1.15-.16-.78.05-8.35-12.63-8.35-12.63l-1.46-2.45c-8.3-13.36-13.36-17.96-13.36-17.96-1.2-1.1-4.18-4.12-7.99.05-3.76,4.18-6.73,17.7-7.88,30.38-.99,12.69-.26,19.89,1.62,22.92,2.04,3.08,5.95,4.12,9.19,1.51,3.45-2.61,2.77-19.31,3.34-27.88.52-8.61,1.36-7.05,1.36-7.05.73-.21,4.7,7.67,4.7,7.67,0,0,10.34,21.09,16.81,24.22,6.58,3.13,11.85-1.88,13.83-6.58,2.04-4.75,5.48-20.41.37-37.74-5.27-17.49-15.92-22.81-15.92-22.81Z"/>
+                    <path class="cls-2" d="M203.69,212.83c-.26-5.79-.94-20.52-2.56-27.2-.68-2.87-1.88-5.48-4.7-6.58-.31-.1-.68-.21-.94-.26-1.77-.37-2.77,2.09-3.24,3.29-1.41,3.6-2.4,12.11-2.66,14.77-.84,8.09-1.51,27.2-.1,36.96.57,4.07,1.93,6.73,6.06,7.62,1.67.37,4.75.26,6.06-.57,1.15-.73,1.98-2.14,2.24-3.39.78-3.39.47-8.2.31-11.85-.16-4.18-.26-8.46-.47-12.79Z"/>
+                    <path class="cls-2" d="M270.46,180.62c-8.93-4.75-23.6-4.75-32.73-3.6-9.4,1.15-21.98,4.07-27.3,11.8-2.04,2.92-3.24,7.46-2.3,11.12.52,2.04,1.98,3.6,4.12,4.7,3.81,1.98,16.5,2.4,22.13,3.03,5.32.57,15.14,1.51,20.57,3.76,0,0,5.12,1.77,5.06,4.7,0,1.46-1.1,2.61-2.19,3.39-8.04,5.69-19.05,7.31-28.87,7.15-3.34-.05-6.06-.57-9.45-2.04-1.46-.63-3.29-1.77-3.03-3.76.42-3.13,4.02-3.92,6.84-3.65,1.62.16,3.65.84,5.22,1.41,6.32,2.51,9.19,4.59,14.72,3.71,2.09-.31,9.24-1.88,10.18-4.8.26-.73-.1-1.51-.63-2.04-.73-.78-5.06-2.45-6.21-2.87-4.23-1.51-12.22-2.87-16.65-3.03-5.85-.21-13.83.99-17.17,5.79-2.98,4.33-3.65,13.1,11.22,20.52,6.89,3.45,15.3,4.96,23.02,4.12,4.44-.52,17.12-2.51,21.92-12.58,2.61-5.43,2.35-12.69-.47-17.85-1.83-3.39-4.07-7.93-20.67-10.02-2.66-.31-22.19-2.61-23.96-2.87-.99-.16-5.59-.68-3.97-2.45.47-.52,1.83-.89,2.66-1.1,10.23-2.82,23.23-2.45,34.04-3.08,2.4-.16,7.88-.47,10.49-1.31,2.51-.78,4.59-2.56,5.17-5.32.31-1.41-.42-2.09-1.77-2.82Z"/>
+                    <path class="cls-2" d="M536.69,193.2h-30.64c-.31-10.6-1.41-21.04-3.18-31.32-.31-1.77-1.83-3.03-3.65-3.03h-8.25c-1.62,0-2.82,1.46-2.56,3.08,1.93,10.23,3.08,20.72,3.45,31.32h-31.16c-1.41,0-2.56,1.15-2.56,2.61v9.4c0,1.41,1.15,2.61,2.56,2.61h31.16c-.37,10.6-1.51,21.04-3.45,31.32-.31,1.57.94,3.08,2.56,3.08h8.25c1.77,0,3.34-1.31,3.65-3.03,1.77-10.28,2.87-20.72,3.18-31.32h30.64c1.41,0,2.56-1.15,2.56-2.61v-9.4c0-1.57-1.15-2.71-2.56-2.71Z"/>
+                    <path class="cls-2" d="M114.43,79.56c1.2.84,2.92.21,4.12-1.1,10.49-11.33,22.03-21.19,35.13-30.12C239.66-10.34,365.89-1.77,439.75,72.56c24.27,24.27,37.64,50.38,44.63,70.89.52,1.51,1.93,2.51,3.5,2.51h8.46c1.77,0,3.03-1.72,2.45-3.39-9.19-27.2-26.99-57-52.83-81.28C368.44-11.69,242.85-19.78,155.3,39.83c-14.3,9.66-28.55,22.03-41.03,36.18-1.2,1.36-.78,2.87.16,3.55Z"/>
+                  </g>
+                </svg>
+               Disney+ Originals
               </h2>
               <p class="mt-4 text-center text-gray-300 max-w-3xl">
                 A curated collection of Disney+ Originals — exclusive films and premieres from Disney's streaming service. Browse titles assigned to the Disney+ Originals category below.
               </p>
             </div>
+   <!-- Horror Carousel -->
+            <section class="py-16 bg-black">
+              <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center justify-center mb-6 flex-col">
+                  <h2 class="text-5xl font-bold flex items-center gap-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-auto" aria-hidden="true" role="img"><path d="M12 2C8.13 2 5 5.13 5 9c0 4.97 7 13 7 13s7-8.03 7-13c0-3.87-3.13-7-7-7z" fill="#9f1f1f"/></svg>
+                   Horror
+                  </h2>
+                  <p class="mt-4 text-center text-gray-300 max-w-3xl">
+                    A collection of Horror titles — movies that deliver scares, suspense and thrills. Browse titles assigned to the Horror category below.
+                  </p>
+                </div>
+
+          @php
+            // Prefer an explicit $horrorMovies collection passed from a controller
+            $horror = $horrorMovies ?? collect();
+
+            // If not provided, try to load movies from the category record
+            if ((empty($horror) || $horror->count() === 0) ) {
+              try {
+                $cat = \App\Models\Category::where('slug', 'horror')->first();
+                if ($cat) {
+                  $horror = $cat->movies()->get();
+                }
+              } catch (\Exception $e) {
+                // ignore errors and fallback to heuristic
+              }
+            }
+
+            // Final fallback: filter the provided $movies collection for 'horror' keywords
+            if ((empty($horror) || $horror->count() === 0) && isset($movies) && $movies->count()) {
+              $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
+
+              $horror = $source->filter(function($movie) {
+                $hay = '';
+                $hay .= isset($movie->title) ? ' ' . $movie->title : '';
+                $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
+                $hay .= isset($movie->production_company) ? ' ' . $movie->production_company : '';
+                $hay .= isset($movie->collection) ? ' ' . $movie->collection : '';
+                $hay .= isset($movie->brand) ? ' ' . $movie->brand : '';
+
+                if (isset($movie->keywords)) {
+                  if (is_array($movie->keywords)) {
+                    $hay .= ' ' . implode(' ', $movie->keywords);
+                  } else {
+                    $hay .= ' ' . $movie->keywords;
+                  }
+                }
+
+                return stripos($hay, 'horror') !== false || stripos($hay, 'scary') !== false || stripos($hay, 'thriller') !== false;
+              })->values();
+            }
+          @endphp
+
+                @if($horror->count())
+                <div class="relative">
+                  <!-- Left arrow -->
+                  <button type="button" class="carousel-arrow left arrow-button absolute left-4 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+
+                  <!-- Carousel strip -->
+                  <div class="carousel overflow-x-auto scrollbar-hidden snap-x snap-mandatory flex gap-6 px-6 py-2">
+                    @foreach($horror as $movie)
+                    <article class="movie-card snap-center bg-white/5 rounded-lg overflow-hidden flex-shrink-0 flex flex-col w-[260px] md:w-[300px] lg:w-[320px] cursor-pointer" aria-labelledby="horror-movie-{{ $movie->id }}-title">
+                      <a href="{{ route('movies.show', $movie->id) }}" class="absolute inset-0 z-10" tabindex="-1" aria-hidden="true"></a>
+                      <a href="{{ route('movies.show', $movie->id) }}" class="media block w-full bg-gray-800 overflow-hidden flex-shrink-0">
+                        <img src="{{ $movie->image_url ?? asset('image/placeholder.png') }}" alt="{{ $movie->title }} poster" class="w-full h-[330px] md:h-[360px] lg:h-[380px] object-cover lazy block">
+                        <div class="overlay">
+                          @php
+                            $rawTitle = trim($movie->title ?? '');
+                            $first = $rawTitle !== '' ? mb_strtoupper(mb_substr($rawTitle, 0, 1, 'UTF-8'), 'UTF-8') : '';
+                            $rest = $rawTitle !== '' ? mb_substr($rawTitle, 1, mb_strlen($rawTitle, 'UTF-8'), 'UTF-8') : '';
+                            $titleCap = $first . $rest;
+                          @endphp
+                          <h3 id="horror-movie-{{ $movie->id }}-title" class="movie-title text-white text-sm font-medium tracking-tight">{{ $titleCap }}</h3>
+                        </div>
+                      </a>
+                      <div class="p-4 flex-1 flex flex-col justify-between">
+                        <p class="text-xs text-gray-300 mt-2 leading-snug">{{ Str::limit($movie->description, 90) }}</p>
+                        <div class="mt-5 flex items-center justify-center rating-row">
+                          @php
+                            $val = $movie->rating_decimal ?? (isset($movie->user_score) ? $movie->user_score/10 : null);
+                          @endphp
+                          @include('components.user_score_circle', ['value' => $val, 'size' => 44, 'stroke' => 5, 'label' => 'User Score', 'showDecimal' => false])
+                        </div>
+                      </div>
+                    </article>
+                    @endforeach
+                  </div>
+
+                  <!-- Right arrow -->
+                  <button type="button" class="carousel-arrow right arrow-button absolute right-4 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+                @else
+                {{-- Horror no-movies message removed to keep parity with other carousels --}}
+                @endif
+              </div>
+            </section>
 
       @php
         // Prefer an explicit $disneyMovies collection passed from a controller
@@ -552,7 +671,7 @@
             @endif
           </div>
         </section>
-
+        
     <!-- Main Content -->
     <main class="pt-20">
       
@@ -705,35 +824,21 @@
     </div>
   </div>
 <br>
-<div class="container mx-auto px-6">
-    <!-- الروابط الرئيسية (محدّثة: أربعة عناوين فقط كما طُلب) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-
-      <!-- Marvel Cinematic Universe -->
-      <div>
-        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Marvel Cinematic Universe</a></h3>
-        <!-- Links intentionally removed per request -->
-      </div>
-
-      <!-- disney plus -->
-      <div>
-        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">disney plus</a></h3>
-        <!-- Links intentionally removed per request -->
-      </div>
-
-      <!-- DC -->
-      <div>
-        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">DC</a></h3>
-        <!-- Links intentionally removed per request -->
-      </div>
-
-      <!-- Horror -->
-      <div>
-        <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Horror</a></h3>
-        <!-- Links intentionally removed per request -->
-      </div>
-
-    </div>
+<br>
+<div class="grid grid-cols-4 text-center place-items-center mb-10">
+  <div>
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Marvel Cinematic Universe</a></h3>
+  </div>
+  <div>
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">disney plus</a></h3>
+  </div>
+  <div>
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Horror</a></h3>
+  </div>
+  <div>
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">DC</a></h3>
+  </div>
+</div>
 
     <!-- الجزء السفلي -->
     <div class="border-t border-gray-700 pt-6 flex flex-col items-center justify-center text-sm text-gray-400 text-center">

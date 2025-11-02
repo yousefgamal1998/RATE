@@ -28,5 +28,13 @@ class CategorySeeder extends Seeder
             'name' => 'Disney Plus',
             'description' => 'Movies and originals featured on Disney Plus',
         ]);
+
+        // Add a Horror category so dashboard and add-movie can reference it
+        Category::firstOrCreate(['slug' => 'horror'], [
+            'name' => 'Horror',
+            'description' => 'Scary, suspenseful and horror films',
+        ]);
+
+
     }
 }

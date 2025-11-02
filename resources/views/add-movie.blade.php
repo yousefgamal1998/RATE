@@ -75,6 +75,14 @@
       @foreach($categories as $cat)
         <option value="{{ $cat->id }}" {{ (string)old('category_id') === (string)$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
       @endforeach
+      @php
+        // If the DB doesn't yet contain a Horror category, show an inline hint so admin
+        // knows how to add it. The seeder below creates a proper 'horror' category.
+        $hasHorror = $categories->contains(function($c){ return isset($c->slug) && $c->slug === 'horror'; });
+      @endphp
+      @if(!$hasHorror)
+        <option disabled>Horror (not found in DB — run CategorySeeder)</option>
+      @endif
     </select>
     <p class="text-xs text-white/60 mt-1">Assign the movie to a category (e.g. Marvel Cinematic Universe or Disney+ Originals).</p>
   </div>

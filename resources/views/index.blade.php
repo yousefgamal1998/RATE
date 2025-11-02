@@ -394,11 +394,27 @@
     </footer>
     </div>
 
+@php
+    // Safely evaluate auth/route values so rendering won't crash when DB is down
+    try {
+        $isAuthenticated = auth()->check();
+    } catch (\Throwable $e) {
+        $isAuthenticated = false;
+    }
+
+    try {
+        $loginUrl = route('login');
+    } catch (\Throwable $e) {
+        // fallback to a sensible default path if route helper fails
+        $loginUrl = url('/login');
+    }
+@endphp
+
 <script>
   // نمرّر حالة تسجيل الدخول لـ JS بطريقة آمنة
-  window.isAuthenticated = @json(Auth::check());
-    // استخدم اسم المسار المخصص login لضمان مرونة إذا تغيرت الروت
-    window.loginUrl = @json(route('login'));
+  window.isAuthenticated = @json($isAuthenticated);
+  // استخدم اسم المسار المخصص login لضمان مرونة إذا تغيرت الروت
+  window.loginUrl = @json($loginUrl);
 </script>
 
 <!-- Start user-score delayed animation: define startUserScoreAnimation() and call it on window.load -->
