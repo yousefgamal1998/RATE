@@ -222,10 +222,22 @@
             <a href="#" class="text-3xl font-bold text-rate-red tracking-tight">RATE</a>
             
             <ul class="hidden md:flex list-none gap-10 mx-8">
-                <li><a href="#movies" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Free Movies & TV</a></li>
-                <li><a href="#live" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Live TV</a></li>
-                <li><a href="#features" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Features</a></li>
-                <li><a href="#download" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Download</a></li>
+              <li>
+                @php $mcuId = \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id'); @endphp
+                <a href="#" data-category-id="{{ $mcuId }}" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Marvel Cinematic Universe</a>
+              </li>
+              <li>
+                @php $disneyId = \App\Models\Category::whereIn('slug', ['disney-plus-originals','disney-plus'])->value('id'); @endphp
+                <a href="#" data-category-id="{{ $disneyId }}" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Disney Plus</a>
+              </li>
+              <li>
+                @php $horrorId = \App\Models\Category::where('slug','horror')->value('id'); @endphp
+                <a href="#" data-category-id="{{ $horrorId }}" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">Horror</a>
+              </li>
+              <li>
+                @php $dcId = \App\Models\Category::where('slug','dc-comics')->value('id'); @endphp
+                <a href="#" data-category-id="{{ $dcId }}" class="nav-link relative text-white/90 hover:text-white font-medium text-sm transition-colors duration-300">DC</a>
+              </li>
             </ul>
             
             <div class="flex items-center gap-4">
@@ -357,7 +369,7 @@
         <!-- End Latest Movies -->
 
         <!-- Marvel Cinematic Universe Carousel -->
-        <section class="py-16 bg-black">
+        <section id="category-{{ $marvelCategory->id ?? \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id') }}" class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">
             @php $mcuId = $marvelCategory->id ?? \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id'); @endphp
             <div class="flex items-center justify-center mb-6 flex-col" data-category-id="{{ $marvelCategory->id ?? \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id') }}">
@@ -479,7 +491,7 @@
         <!-- (removed duplicate compact Disney carousel inserted earlier; the canonical Disney+ section appears later) -->
 
         <!-- DC Comics Carousel -->
-        <section class="py-16 bg-black">
+        <section id="category-{{ $cat->id ?? \App\Models\Category::where('slug','dc-comics')->value('id') }}" class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">
             @php $dcId = $cat->id ?? \App\Models\Category::where('slug','dc-comics')->value('id'); @endphp
             <div class="flex items-center justify-center mb-6 flex-col" data-category-id="{{ $cat->id ?? \App\Models\Category::where('slug','dc-comics')->value('id') }}">
@@ -579,7 +591,7 @@
         </section>
 
         <!-- Disney+ Originals Carousel -->
-        <section class="py-16 bg-black">
+        <section id="category-{{ \App\Models\Category::whereIn('slug', ['disney-plus-originals','disney-plus'])->value('id') }}" class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">
             @php
               // Resolve either canonical slug or the legacy helper slug so the
@@ -706,7 +718,7 @@
         </section>
 
         <!-- Horror Carousel -->
-            <section class="py-16 bg-black">
+          <section id="category-{{ $cat->id ?? \App\Models\Category::where('slug','horror')->value('id') }}" class="py-16 bg-black">
               <div class="max-w-7xl mx-auto px-6">
                   <div class="flex items-center justify-center mb-6 flex-col">
                     @php $horrorId = $cat->id ?? \App\Models\Category::where('slug','horror')->value('id'); @endphp
@@ -1295,3 +1307,32 @@
 </script>
 
 <!-- Copy sync command UI removed per request -->
+
+<script>
+  // Smooth-scroll header category links to their sections (offset for fixed header)
+  (function(){
+    function headerHeight(){
+      var header = document.querySelector('header');
+      return header ? header.getBoundingClientRect().height : 80;
+    }
+
+    document.addEventListener('click', function(e){
+      var a = e.target.closest && e.target.closest('a[data-category-id]');
+      if(!a) return;
+      // prevent default navigation
+      e.preventDefault();
+
+      var id = a.getAttribute('data-category-id');
+      if(!id) return;
+
+      var target = document.getElementById('category-' + id);
+      if(!target) return;
+
+      var offset = headerHeight() + 12; // small margin below header
+      var rect = target.getBoundingClientRect();
+      var top = window.scrollY + rect.top - offset;
+
+      window.scrollTo({ top: Math.max(0, Math.round(top)), behavior: 'smooth' });
+    }, false);
+  })();
+</script>
