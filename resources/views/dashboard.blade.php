@@ -289,11 +289,13 @@
 
 
       <!-- Latest Movies Carousel -->
-        <section class="py-16 bg-black">
+        <section class="py-16 bg-black" data-category-id="{{ \App\Models\Category::where('slug','latest-movies')->value('id') }}">
           <div class="max-w-7xl mx-auto px-6">
+            @php $latestId = \App\Models\Category::where('slug','latest-movies')->value('id'); @endphp
             <div class="flex items-center justify-center mb-6">
               <h2 class="text-5xl font-bold flex items-center gap-4">
                🎬 Latest Movies
+              
               </h2>
             </div>
 
@@ -357,10 +359,12 @@
         <!-- Marvel Cinematic Universe Carousel -->
         <section class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">
-            <div class="flex items-center justify-center mb-6 flex-col">
+            @php $mcuId = $marvelCategory->id ?? \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id'); @endphp
+            <div class="flex items-center justify-center mb-6 flex-col" data-category-id="{{ $marvelCategory->id ?? \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id') }}">
               <h2 class="text-5xl font-bold flex items-center gap-4">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 246.5 55.23" class="h-10 w-auto" aria-hidden="true" role="img"><title>Marvel Studios logo</title><path d="M518.28,486.45h117v-2.05h-117Z" transform="translate(-388.75 -484.39)"/><path d="M518.28,539.59h117v-2.05h-117Z" transform="translate(-388.75 -484.39)"/><path d="M534.52,519.17v5.89c0,5-2.48,7.51-7.51,7.51h-1.27c-5,0-7.39-2.48-7.39-7.39v-5.63h4.5v5.8c0,2.08,1,3.06,3.06,3.06h.92c2.08,0,3.06-1,3.06-3.06v-6.06a4.13,4.13,0,0,0-2-3.87l-5.66-4.1a8,8,0,0,1-3.87-7.51V499c0-5,2.48-7.51,7.51-7.51H527c5,0,7.39,2.48,7.39,7.39v3.46h-4.5v-3.64c0-2.08-1-3.06-3.06-3.06H526c-2.08,0-3.06,1-3.06,3.06v5.08a4.17,4.17,0,0,0,2.08,3.87l5.6,4c2.94,2.14,3.87,4,3.87,7.51" transform="translate(-388.75 -484.39)"/><path d="M541.61,532.22V496.08h-6.06V491.8h16.74v4.27h-6.06v36.14Z" transform="translate(-388.75 -484.39)"/><path d="M570.51,525.06c0,5-2.48,7.51-7.51,7.51h-1.44c-5,0-7.51-2.48-7.51-7.51V491.8h4.62v33.49c0,2.08,1,3.06,3.06,3.06h1.1c2.08,0,3.06-1,3.06-3.06V491.8h4.62Z" transform="translate(-388.75 -484.39)"/><path d="M578.07,528h2.77c3.12,0,4.56-1.56,4.56-4.68V500.69c0-3.12-1.44-4.68-4.56-4.68h-2.77Zm-4.62-36.2h7.62c6.06,0,8.95,2.89,8.95,8.95v22.52c0,6.06-2.89,8.95-8.95,8.95h-7.62Z" transform="translate(-388.75 -484.39)"/><path d="M597.42,532.22H592.8V491.8h4.62Z" transform="translate(-388.75 -484.39)"/><path d="M609.27,495.67h-1.39c-2.08,0-3.06,1-3.06,3.06v26.56c0,2.08,1,3.06,3.06,3.06h1.39c2.08,0,3.06-1,3.06-3.06V498.73c0-2.08-1-3.06-3.06-3.06m.17,36.89h-1.73c-5,0-7.51-2.48-7.51-7.51V499c0-5,2.48-7.51,7.51-7.51h1.73c5,0,7.51,2.48,7.51,7.51v26.1c0,5-2.48,7.51-7.51,7.51" transform="translate(-388.75 -484.39)"/><path d="M635.15,519.17v5.89c0,5-2.48,7.51-7.51,7.51h-1.27c-5,0-7.39-2.48-7.39-7.39v-5.63h4.5v5.8c0,2.08,1,3.06,3.06,3.06h.92c2.08,0,3.06-1,3.06-3.06v-6.06a4.13,4.13,0,0,0-2-3.87l-5.66-4.1a8,8,0,0,1-3.87-7.51V499c0-5,2.48-7.51,7.51-7.51h1.16c5,0,7.39,2.48,7.39,7.39v3.46h-4.51v-3.64c0-2.08-1-3.06-3.06-3.06h-.81c-2.08,0-3.06,1-3.06,3.06v5.08a4.17,4.17,0,0,0,2.08,3.87l5.6,4c2.94,2.14,3.87,4,3.87,7.51" transform="translate(-388.75 -484.39)"/><path d="M388.75,539.61H511.36V484.39H388.75Z" transform="translate(-388.75 -484.39)" style="fill:#e50b14"/><path d="M492.66,499.16h-6.54v9.13h6.54v7.38h-6.54v9.27h6.54v7.27H478.88V495.58l-5.81,36.63-8.5,0s-4.34-25.94-4.34-26h0c.7,4.19-1.93,8.57-4.26,10.3l4.6,15.67H453.4l-3.51-13.38-1.69.25v13.12H434.36l-.85-6.22h-5.67l-.85,6.22H412.91V512.73l-3.27,19.48h-3.88l-3.32-19.48v19.48h-7.3V491.79h9.27l3.25,20.88L411,491.79h9.27V529l5.57-37.17h9.68l5.39,35.88,0-35.88h7.4a11.69,11.69,0,0,1,10.54,6.57l-.83-6.57h7.39l3.34,24.61,3.37-24.61h20.5Z" transform="translate(-388.75 -484.39)" style="fill:#fff"/><path d="M448.24,499h0v13a4,4,0,0,0,1.72-.41c1.7-.83,3.15-2.89,3.15-6.16,0-6.26-4.26-6.43-4.83-6.43" transform="translate(-388.75 -484.39)" style="fill:#e50b14"/><path d="M428.7,519.56h4.08l-2.08-17.28Z" transform="translate(-388.75 -484.39)" style="fill:#e50b14"/><path d="M507.37,532.2H493.93V491.79h7.24v33.14h6.2Z" transform="translate(-388.75 -484.39)" style="fill:#fff"/></svg>
                Marvel Cinematic Universe
+              
               </h2>
               <p class="mt-4 text-center text-gray-300 max-w-3xl">
                 Discover the official Marvel Cinematic Universe — from Earth’s Mightiest Heroes to cosmic sagas. Browse films by phase, year, or character, read synopses, and see user scores and images. Whether you’re catching up or revisiting favorites, find everything MCU here.
@@ -377,7 +381,7 @@
         // Category record so editors can explicitly control MCU membership.
         if ((empty($mcu) || $mcu->count() === 0) ) {
           try {
-            $marvelCategory = \App\Models\Category::where('slug', 'mcu')->first();
+            $marvelCategory = \App\Models\Category::where('slug', 'marvel-cinematic-universe')->first();
             if ($marvelCategory) {
               $mcu = $marvelCategory->movies()->latest()->take(10)->get();
             }
@@ -394,6 +398,10 @@
           $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
 
           $mcu = $source->filter(function($movie) {
+            // If this movie already has an explicit category_id assigned, skip heuristic matching
+            if (isset($movie->category_id) && !empty($movie->category_id)) {
+              return false;
+            }
             // build a searchable string from several possible fields
             $hay = '';
             $hay .= isset($movie->title) ? ' ' . $movie->title : '';
@@ -468,13 +476,17 @@
           </div>
         </section>
 
+        <!-- (removed duplicate compact Disney carousel inserted earlier; the canonical Disney+ section appears later) -->
+
         <!-- DC Comics Carousel -->
         <section class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">
-            <div class="flex items-center justify-center mb-6 flex-col">
+            @php $dcId = $cat->id ?? \App\Models\Category::where('slug','dc-comics')->value('id'); @endphp
+            <div class="flex items-center justify-center mb-6 flex-col" data-category-id="{{ $cat->id ?? \App\Models\Category::where('slug','dc-comics')->value('id') }}">
               <h2 class="text-5xl font-bold flex items-center gap-4">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-auto" aria-hidden="true" role="img"><path d="M12 2L2 7l10 5 10-5-10-5zm0 7.5L4.5 8 12 4.5 19.5 8 12 9.5z" fill="#fff"/></svg>
                DC Comics
+              
               </h2>
               <p class="mt-4 text-center text-gray-300 max-w-3xl">
                 Titles from the DC Comics universe — heroes, villains and epic sagas. Browse the DC collection below.
@@ -485,21 +497,21 @@
       @php
         $dc = $dcMovies ?? collect();
 
-        if ((empty($dc) || $dc->count() === 0) ) {
-          try {
-            $cat = \App\Models\Category::where('slug', 'dc-comics')->first();
-            if ($cat) {
-              $dc = $cat->movies()->get();
-            }
-          } catch (\Exception $e) {
-            // ignore and fallback to heuristic below
-          }
-        }
+        // If the controller didn't supply $dcMovies, do not perform an
+        // additional category DB lookup here — prefer the controller as
+        // the single source of truth. The final fallback below still
+        // performs a heuristic filter on $movies when no explicit
+        // collection is available.
+        // (This keeps view logic simple and avoids surprising results.)
 
         if ((empty($dc) || $dc->count() === 0) && isset($movies) && $movies->count()) {
           $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
 
           $dc = $source->filter(function($movie) {
+            // Skip movies that already have an explicit category assignment
+            if (isset($movie->category_id) && !empty($movie->category_id)) {
+              return false;
+            }
             $hay = '';
             $hay .= isset($movie->title) ? ' ' . $movie->title : '';
             $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
@@ -569,7 +581,15 @@
         <!-- Disney+ Originals Carousel -->
         <section class="py-16 bg-black">
           <div class="max-w-7xl mx-auto px-6">
-            <div class="flex items-center justify-center mb-6 flex-col">
+            @php
+              // Resolve either canonical slug or the legacy helper slug so the
+              // dashboard works regardless of which slug is present in the DB.
+              // Use explicit variable names here to avoid accidental reuse of
+              // the generic `$cat` variable used elsewhere in the template.
+              $disneyCat = \App\Models\Category::whereIn('slug', ['disney-plus-originals','disney-plus'])->first();
+              $disneyId = $disneyCat->id ?? \App\Models\Category::whereIn('slug', ['disney-plus-originals','disney-plus'])->value('id');
+            @endphp
+            <div class="flex items-center justify-center mb-6 flex-col" data-category-id="{{ $disneyId }}">
               <h2 class="text-5xl font-bold flex items-center gap-4">
                 <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 539 294.94" class="h-10 w-auto" aria-hidden="true" role="img">
                   <defs>
@@ -588,19 +608,112 @@
                     <path class="cls-2" d="M114.43,79.56c1.2.84,2.92.21,4.12-1.1,10.49-11.33,22.03-21.19,35.13-30.12C239.66-10.34,365.89-1.77,439.75,72.56c24.27,24.27,37.64,50.38,44.63,70.89.52,1.51,1.93,2.51,3.5,2.51h8.46c1.77,0,3.03-1.72,2.45-3.39-9.19-27.2-26.99-57-52.83-81.28C368.44-11.69,242.85-19.78,155.3,39.83c-14.3,9.66-28.55,22.03-41.03,36.18-1.2,1.36-.78,2.87.16,3.55Z"/>
                   </g>
                 </svg>
-               Disney+ Originals
+                Disney+ Originals
+              
               </h2>
               <p class="mt-4 text-center text-gray-300 max-w-3xl">
                 A curated collection of Disney+ Originals — exclusive films and premieres from Disney's streaming service. Browse titles assigned to the Disney+ Originals category below.
               </p>
             </div>
-   <!-- Horror Carousel -->
+ 
+
+      @php
+        // Prefer an explicit $disneyMovies collection passed from a controller
+        $disney = $disneyMovies ?? collect();
+
+        // If the controller didn't supply $disneyMovies, do not perform
+        // an additional category DB lookup here — prefer the controller as
+        // the single source of truth. The final fallback below still
+        // performs a heuristic filter on $movies when no explicit
+        // collection is available.
+        // (This keeps view logic simple and avoids surprising results.)
+
+        // Final fallback: filter the provided $movies collection for 'disney' keywords
+        if ((empty($disney) || $disney->count() === 0) && isset($movies) && $movies->count()) {
+          $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
+
+          $disney = $source->filter(function($movie) {
+            // Prefer explicit category assignments over heuristic matching
+            if (isset($movie->category_id) && !empty($movie->category_id)) {
+              return false;
+            }
+            $hay = '';
+            $hay .= isset($movie->title) ? ' ' . $movie->title : '';
+            $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
+            $hay .= isset($movie->production_company) ? ' ' . $movie->production_company : '';
+            $hay .= isset($movie->collection) ? ' ' . $movie->collection : '';
+            $hay .= isset($movie->brand) ? ' ' . $movie->brand : '';
+
+            if (isset($movie->keywords)) {
+              if (is_array($movie->keywords)) {
+                $hay .= ' ' . implode(' ', $movie->keywords);
+              } else {
+                $hay .= ' ' . $movie->keywords;
+              }
+            }
+
+            return stripos($hay, 'disney') !== false || stripos($hay, 'disney+') !== false || stripos($hay, 'disney plus') !== false;
+          })->values();
+        }
+      @endphp
+
+            @if($disney->count())
+            <div class="relative">
+              <!-- Left arrow -->
+              <button type="button" class="carousel-arrow left arrow-button absolute left-4 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <!-- Carousel strip -->
+              <div class="carousel overflow-x-auto scrollbar-hidden snap-x snap-mandatory flex gap-6 px-6 py-2">
+                @foreach($disney as $movie)
+                <article class="movie-card snap-center bg-white/5 rounded-lg overflow-hidden flex-shrink-0 flex flex-col w-[260px] md:w-[300px] lg:w-[320px] cursor-pointer" aria-labelledby="disney-movie-{{ $movie->id }}-title">
+                  <a href="{{ route('movies.show', $movie->id) }}" class="absolute inset-0 z-10" tabindex="-1" aria-hidden="true"></a>
+                  <a href="{{ route('movies.show', $movie->id) }}" class="media block w-full bg-gray-800 overflow-hidden flex-shrink-0">
+                    <img src="{{ $movie->image_url ?? asset('image/placeholder.png') }}" alt="{{ $movie->title }} poster" class="w-full h-[330px] md:h-[360px] lg:h-[380px] object-cover lazy block">
+                    <div class="overlay">
+                      @php
+                        $rawTitle = trim($movie->title ?? '');
+                        $first = $rawTitle !== '' ? mb_strtoupper(mb_substr($rawTitle, 0, 1, 'UTF-8'), 'UTF-8') : '';
+                        $rest = $rawTitle !== '' ? mb_substr($rawTitle, 1, mb_strlen($rawTitle, 'UTF-8'), 'UTF-8') : '';
+                        $titleCap = $first . $rest;
+                      @endphp
+                      <h3 id="disney-movie-{{ $movie->id }}-title" class="movie-title text-white text-sm font-medium tracking-tight">{{ $titleCap }}</h3>
+                    </div>
+                  </a>
+                  <div class="p-4 flex-1 flex flex-col justify-between">
+                    <p class="text-xs text-gray-300 mt-2 leading-snug">{{ Str::limit($movie->description, 90) }}</p>
+                    <div class="mt-5 flex items-center justify-center rating-row">
+                      @php
+                        $val = $movie->rating_decimal ?? (isset($movie->user_score) ? $movie->user_score/10 : null);
+                      @endphp
+                      @include('components.user_score_circle', ['value' => $val, 'size' => 44, 'stroke' => 5, 'label' => 'User Score', 'showDecimal' => false])
+                    </div>
+                  </div>
+                </article>
+                @endforeach
+              </div>
+
+              <!-- Right arrow -->
+              <button type="button" class="carousel-arrow right arrow-button absolute right-4 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            @else
+            {{-- Disney no-movies message removed to keep parity with MCU behavior --}}
+            @endif
+          </div>
+        </section>
+
+        <!-- Horror Carousel -->
             <section class="py-16 bg-black">
               <div class="max-w-7xl mx-auto px-6">
-                <div class="flex items-center justify-center mb-6 flex-col">
-                  <h2 class="text-5xl font-bold flex items-center gap-4">
+                  <div class="flex items-center justify-center mb-6 flex-col">
+                    @php $horrorId = $cat->id ?? \App\Models\Category::where('slug','horror')->value('id'); @endphp
+                    <h2 class="text-5xl font-bold flex items-center gap-4" data-category-id="{{ $cat->id ?? \App\Models\Category::where('slug','horror')->value('id') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 w-auto" aria-hidden="true" role="img"><path d="M12 2C8.13 2 5 5.13 5 9c0 4.97 7 13 7 13s7-8.03 7-13c0-3.87-3.13-7-7-7z" fill="#9f1f1f"/></svg>
                    Horror
+                  
                   </h2>
                   <p class="mt-4 text-center text-gray-300 max-w-3xl">
                     A collection of Horror titles — movies that deliver scares, suspense and thrills. Browse titles assigned to the Horror category below.
@@ -611,23 +724,22 @@
             // Prefer an explicit $horrorMovies collection passed from a controller
             $horror = $horrorMovies ?? collect();
 
-            // If not provided, try to load movies from the category record
-            if ((empty($horror) || $horror->count() === 0) ) {
-              try {
-                $cat = \App\Models\Category::where('slug', 'horror')->first();
-                if ($cat) {
-                  $horror = $cat->movies()->get();
-                }
-              } catch (\Exception $e) {
-                // ignore errors and fallback to heuristic
-              }
-            }
+            // If the controller didn't supply $horrorMovies, do not perform
+            // an additional category DB lookup here — prefer the controller
+            // as the single source of truth. The final fallback below will
+            // still perform a heuristic filter on $movies when no explicit
+            // collection is available.
+            // (This keeps view logic simple and avoids surprising results.)
 
             // Final fallback: filter the provided $movies collection for 'horror' keywords
             if ((empty($horror) || $horror->count() === 0) && isset($movies) && $movies->count()) {
               $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
 
               $horror = $source->filter(function($movie) {
+                // Skip movies that already have an explicit category assignment
+                if (isset($movie->category_id) && !empty($movie->category_id)) {
+                  return false;
+                }
                 $hay = '';
                 $hay .= isset($movie->title) ? ' ' . $movie->title : '';
                 $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
@@ -696,95 +808,6 @@
               </div>
             </section>
 
-      @php
-        // Prefer an explicit $disneyMovies collection passed from a controller
-        $disney = $disneyMovies ?? collect();
-
-        // If not provided, try to load movies from the category record
-        if ((empty($disney) || $disney->count() === 0) ) {
-          try {
-            $cat = \App\Models\Category::where('slug', 'disney-plus-originals')->first();
-            if ($cat) {
-              $disney = $cat->movies()->get();
-            }
-          } catch (\Exception $e) {
-            // ignore errors and fallback to heuristic
-          }
-        }
-
-        // Final fallback: filter the provided $movies collection for 'disney' keywords
-        if ((empty($disney) || $disney->count() === 0) && isset($movies) && $movies->count()) {
-          $source = $movies instanceof \Illuminate\Support\Collection ? $movies : collect($movies);
-
-          $disney = $source->filter(function($movie) {
-            $hay = '';
-            $hay .= isset($movie->title) ? ' ' . $movie->title : '';
-            $hay .= isset($movie->studio) ? ' ' . $movie->studio : '';
-            $hay .= isset($movie->production_company) ? ' ' . $movie->production_company : '';
-            $hay .= isset($movie->collection) ? ' ' . $movie->collection : '';
-            $hay .= isset($movie->brand) ? ' ' . $movie->brand : '';
-
-            if (isset($movie->keywords)) {
-              if (is_array($movie->keywords)) {
-                $hay .= ' ' . implode(' ', $movie->keywords);
-              } else {
-                $hay .= ' ' . $movie->keywords;
-              }
-            }
-
-            return stripos($hay, 'disney') !== false || stripos($hay, 'disney+') !== false || stripos($hay, 'disney plus') !== false;
-          })->values();
-        }
-      @endphp
-
-            @if($disney->count())
-            <div class="relative">
-              <!-- Left arrow -->
-              <button type="button" class="carousel-arrow left arrow-button absolute left-4 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-
-              <!-- Carousel strip -->
-              <div class="carousel overflow-x-auto scrollbar-hidden snap-x snap-mandatory flex gap-6 px-6 py-2">
-                @foreach($disney as $movie)
-                <article class="movie-card snap-center bg-white/5 rounded-lg overflow-hidden flex-shrink-0 flex flex-col w-[260px] md:w-[300px] lg:w-[320px] cursor-pointer" aria-labelledby="disney-movie-{{ $movie->id }}-title">
-                  <a href="{{ route('movies.show', $movie->id) }}" class="absolute inset-0 z-10" tabindex="-1" aria-hidden="true"></a>
-                  <a href="{{ route('movies.show', $movie->id) }}" class="media block w-full bg-gray-800 overflow-hidden flex-shrink-0">
-                    <img src="{{ $movie->image_url ?? asset('image/placeholder.png') }}" alt="{{ $movie->title }} poster" class="w-full h-[330px] md:h-[360px] lg:h-[380px] object-cover lazy block">
-                    <div class="overlay">
-                      @php
-                        $rawTitle = trim($movie->title ?? '');
-                        $first = $rawTitle !== '' ? mb_strtoupper(mb_substr($rawTitle, 0, 1, 'UTF-8'), 'UTF-8') : '';
-                        $rest = $rawTitle !== '' ? mb_substr($rawTitle, 1, mb_strlen($rawTitle, 'UTF-8'), 'UTF-8') : '';
-                        $titleCap = $first . $rest;
-                      @endphp
-                      <h3 id="disney-movie-{{ $movie->id }}-title" class="movie-title text-white text-sm font-medium tracking-tight">{{ $titleCap }}</h3>
-                    </div>
-                  </a>
-                  <div class="p-4 flex-1 flex flex-col justify-between">
-                    <p class="text-xs text-gray-300 mt-2 leading-snug">{{ Str::limit($movie->description, 90) }}</p>
-                    <div class="mt-5 flex items-center justify-center rating-row">
-                      @php
-                        $val = $movie->rating_decimal ?? (isset($movie->user_score) ? $movie->user_score/10 : null);
-                      @endphp
-                      @include('components.user_score_circle', ['value' => $val, 'size' => 44, 'stroke' => 5, 'label' => 'User Score', 'showDecimal' => false])
-                    </div>
-                  </div>
-                </article>
-                @endforeach
-              </div>
-
-              <!-- Right arrow -->
-              <button type="button" class="carousel-arrow right arrow-button absolute right-4 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
-            @else
-            {{-- Disney no-movies message removed to keep parity with MCU behavior --}}
-            @endif
-          </div>
-        </section>
-        
     <!-- Main Content -->
     <main class="pt-20">
       
@@ -940,16 +963,20 @@
 <br>
 <div class="grid grid-cols-4 text-center place-items-center mb-10">
   <div>
-    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Marvel Cinematic Universe</a></h3>
+    @php $mcuId = \App\Models\Category::where('slug','marvel-cinematic-universe')->value('id'); @endphp
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline" data-category-id="{{ $mcuId }}">Marvel Cinematic Universe</a></h3>
   </div>
   <div>
-    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">disney plus</a></h3>
+    @php $disneyId = \App\Models\Category::whereIn('slug', ['disney-plus-originals','disney-plus'])->value('id'); @endphp
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline" data-category-id="{{ $disneyId }}">Disney Plus</a></h3>
   </div>
   <div>
-    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">Horror</a></h3>
+    @php $horrorId = \App\Models\Category::where('slug','horror')->value('id'); @endphp
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline" data-category-id="{{ $horrorId }}">Horror</a></h3>
   </div>
   <div>
-    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline">DC</a></h3>
+    @php $dcId = \App\Models\Category::where('slug','dc-comics')->value('id'); @endphp
+    <h3 class="text-white font-semibold text-lg mb-4"><a href="#" class="hover:underline" data-category-id="{{ $dcId }}">DC</a></h3>
   </div>
 </div>
 
@@ -1266,3 +1293,5 @@
     }
   })();
 </script>
+
+<!-- Copy sync command UI removed per request -->

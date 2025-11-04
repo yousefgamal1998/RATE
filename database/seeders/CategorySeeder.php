@@ -12,35 +12,22 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Ensure the three default categories exist. Using firstOrCreate makes this safe to run repeatedly.
-        Category::firstOrCreate(['slug' => 'latest'], [
-            'name' => 'Latest Movies',
-            'description' => 'Recently added movies',
-        ]);
+        $items = [
+            ['slug' => 'latest-movies', 'name' => 'Latest Movies', 'description' => 'Recently added movies'],
+            ['slug' => 'mcu', 'name' => 'Marvel Cinematic Universe', 'description' => 'Movies and series in the Marvel Cinematic Universe'],
+            ['slug' => 'dc-comics', 'name' => 'DC Comics', 'description' => 'Movies and series from the DC Comics universe'],
+            ['slug' => 'disney-plus', 'name' => 'Disney+ Originals', 'description' => 'Disney+ originals and premieres'],
+            ['slug' => 'horror', 'name' => 'Horror', 'description' => 'Scary, suspenseful and horror films'],
+        ];
 
-        Category::firstOrCreate(['slug' => 'mcu'], [
-            'name' => 'Marvel Cinematic Universe',
-            'description' => 'Movies and series in the Marvel Cinematic Universe',
-        ]);
+        foreach ($items as $it) {
+            $cat = Category::firstOrCreate(
+                ['slug' => $it['slug']],
+                ['name' => $it['name'], 'description' => $it['description'] ?? null]
+            );
 
-        // 'disney-plus' used as a concise slug for CI/CD and scripting environments
-        Category::firstOrCreate(['slug' => 'disney-plus'], [
-            'name' => 'Disney Plus',
-            'description' => 'Movies and originals featured on Disney Plus',
-        ]);
-
-        // Add a Horror category so dashboard and add-movie can reference it
-        Category::firstOrCreate(['slug' => 'horror'], [
-            'name' => 'Horror',
-            'description' => 'Scary, suspenseful and horror films',
-        ]);
-
-        // DC Comics category
-        Category::firstOrCreate(['slug' => 'dc-comics'], [
-            'name' => 'DC Comics',
-            'description' => 'Movies and series from the DC Comics universe',
-        ]);
-
-
+            // Print helpful info when running seeder interactively
+            $this->command?->info(sprintf('Category: %-28s slug=%-15s id=%d', $cat->name, $cat->slug, $cat->id));
+        }
     }
 }

@@ -97,3 +97,43 @@ Route::middleware(['auth'])->get('/categories/{slug}', [App\Http\Controllers\Mov
 Route::get('/tmdb/movie/{id}', [TmdbController::class, 'show'])
     ->whereNumber('id')
     ->name('tmdb.movie');
+
+// Temporary debug route to inspect dashboard collections (local/dev only)
+Route::get('/debug/dashboard-data', function () {
+    if (!app()->environment('local') && !app()->environment('development')) {
+        abort(404);
+    }
+
+    $mcu = \App\Models\Movie::where(function($q){
+        $q->where('visibility','dashboard')->orWhere('visibility','both');
+    })->where('dashboard_id', 2)->orderBy('created_at','desc')->get();
+
+    $disney = collect();
+    $disneyCat = \App\Models\Category::whereIn('slug', ['disney-plus-originals','disney-plus'])->first();
+    if ($disneyCat) {
+        $disney = \App\Models\Movie::where(function($q){
+            $q->where('visibility','dashboard')->orWhere('visibility','both');
+        })->where('dashboard_id', $disneyCat->id)->orderBy('created_at','desc')->get();
+    }
+
+    $dc = collect();
+    $dcCat = \App\Models\Category::where('slug','dc-comics')->first();
+    if ($dcCat) {
+        $dc = \App\Models\Movie::where(function($q){
+            $q->where('visibility','dashboard')->orWhere('visibility','both');
+        })->where('dashboard_id', $dcCat->id)->orderBy('created_at','desc')->get();
+    }
+
+    $horror = collect();
+    $hCat = \App\Models\Category::where('slug','horror')->first();
+    if ($hCat) {
+        $horror = $hCat->movies()->orderBy('created_at','desc')->get();
+    }
+
+    return response()->json([
+        'mcu' => $mcu->map->only(['id','title','category_id','dashboard_id','visibility']),
+        'disney' => $disney->map->only(['id','title','category_id','dashboard_id','visibility']),
+        'dc' => $dc->map->only(['id','title','category_id','dashboard_id','visibility']),
+        'horror' => $horror->map->only(['id','title','category_id','dashboard_id','visibility']),
+    ]);
+});
