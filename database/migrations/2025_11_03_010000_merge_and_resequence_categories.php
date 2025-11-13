@@ -26,6 +26,12 @@ return new class extends Migration
         // Step 0: gather DB name
         $dbName = DB::getDatabaseName();
 
+        // If the `categories` table does not exist, return early.
+        // This avoids QueryException during deployments where the table
+        // may not have been created yet.
+        if (! DB::getSchemaBuilder()->hasTable('categories')) {
+            return;
+        }
         // We'll collect a full backup snapshot of categories and any rows referencing category_id
         $backup = [
             'created_at' => now()->toDateTimeString(),
