@@ -21,13 +21,11 @@ RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql mbstring exif pcntl bcmath g
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
-
-# Cache composer dependencies when possible
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-
-# Copy the rest of the application
+# Copy the rest of the application first (so composer scripts that rely on project files can run)
 COPY . .
+
+# Install composer dependencies
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 RUN composer dump-autoload --optimize
 
