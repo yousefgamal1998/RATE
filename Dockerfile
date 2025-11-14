@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile for Laravel (Apache + PHP) on Railway
 # Builder: install PHP extensions and Composer dependencies
-FROM php:8.1-cli AS builder
+FROM php:8.2-cli AS builder
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -33,7 +33,7 @@ RUN composer dump-autoload --optimize
 
 
 # Final image: Apache + PHP
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
     libpng-dev \
