@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --rating-color: #f6c444; /* يمكنك تغييره مركزيًا */
+}
+
+/* Small layout tweaks for dashboard movie cards */
+.movie-card h3.lowercase {
+    text-transform: lowercase;
+}
+.movie-card p {
+    color: rgba(226, 226, 226, 0.85);
+}
+.movie-card .text-yellow-400 {
+    color: #f6c444;
+}
+.movie-card .rating-block {
+    margin-top: 0.6rem;
+}
+
+/* Rating layout used in dashboard cards */
+.rating-row {
+    gap: 0.6rem;
+}
+.rating-star {
+    color: #f6b92d;
+}
+.rating-value {
+    color: #f6c444;
+    font-weight: 700;
+}
+.rating-row .rating-star,
+.rating-row .rating-value {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* precise styling to match provided image */
+.rating-number {
+    color: #f6c444 !important; /* اختر هذا اللون الذهبي */
+    font-weight: 800;
+    font-size: 1.125rem;
+    margin-left: 0.35rem;
+}
+.rating-dec {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+    margin-left: 0.18rem;
+}
+.rating-suffix {
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+.rating-row .rating-star {
+    width: 20px;
+    height: 20px;
+}
